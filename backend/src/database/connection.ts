@@ -48,7 +48,7 @@ export async function initializeDB() {
 export async function tables_exists() {
     const database = getDb();
     const result = await database.query(`
-        SELECT table_name FROM information_schema.tables
+        SELECT table_name AS name FROM information_schema.tables
         WHERE table_schema = 'public';
     `);
     const existingTables = result.rows.map(row => row.name);

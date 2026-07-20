@@ -2,12 +2,18 @@ import express from "express";
 import { errorResponse, successResponse } from "@/utils/response.ts";
 import { GROQ_URL } from "@/constants/constants.ts";
 import { PROMPT_BODY } from "@/constants/prompts.ts";
+import { authenticate } from "@/middleware/user.middleware.ts";
+import { getAllMessages, getMessagesByUser, insertMessage } from "@/database/messages.ts";
+import { AuthenticatedRequest, Message } from "@/database/types.ts";
 
 const messagesRoute = express.Router();
 
-messagesRoute.post("/ask", async (req, res) => {
+messagesRoute.post("/ask", authenticate, async (req: AuthenticatedRequest, res) => {
     if (!req.body) {
         return errorResponse(res, "Request body is missing", 400);
+    }
+    if (!req.id) {
+        return errorResponse(res, "Error while retrieving your user id", 500);
     }
     const { message } = req.body;
     if (!message || message.length <= 0) {
@@ -35,7 +41,35 @@ messagesRoute.post("/ask", async (req, res) => {
     text = text.replace(/\*/g, '').replace(/\n/g, ' ');
     if (text.toLowerCase().startsWith("réponse :")) text = text.substring(9).trim();
 
-    return successResponse(res, { message: text || "No response from AI" });
+    if (!text) {
+        return errorResponse(res, "No response from AI", 400);
+    }
+
+    const date = new Date();
+
+    let id = await insertMessage(req.id!, message, text);
+
+    return successResponse(res, { message: text, date: date, id: id });
 })
+
+messagesRoute.get("/me", authenticate, async (req: AuthenticatedRequest, res) => {
+    if (!req.id) {
+        return errorResponse(res, "Error while retrieving your user id", 500);
+    }
+    const messages = await getMessagesByUser(req.id);
+    return successResponse(res, { content: messages });
+})
+
+messagesRoute.get("/", async (req, res) => {
+    const { filter } = req.body
+    const messages = await getAllMessages()
+    const filteredMessages = applyFilter(messages, filter)
+    return successResponse(res, { content: filteredMessages });
+})
+
+function applyFilter(messages: Message[], _: string): Message[] {
+    //TODO
+    return messages
+}
 
 export default messagesRoute
