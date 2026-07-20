@@ -1,0 +1,25 @@
+{
+  "name": "fool-frontend",
+  "version": "1.0.0",
+  "description": "F.O.O.L frontend",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": ""
+  },
+  "homepage": "https://github.com/TorisutanKholwes/FoolWebsite#readme",
+  "bugs": {
+    "url": "https://github.com/TorisutanKholwes/FoolWebsite/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TorisutanKholwes/FoolWebsite.git"
+  },
+  "license": "ISC",
+  "author": "Tristan Clowez",
+  "contributors": [
+    "Tristan Clowez",
+    "Corentin Delaforte",
+    "Alexis Burnier-Framboret"
+  ]
+}
