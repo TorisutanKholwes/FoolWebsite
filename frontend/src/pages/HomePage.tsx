@@ -1,13 +1,13 @@
 import { useApi } from "../hook/useApi.tsx";
 import { ApiResponse, ApiStatus, User } from "../api/types.ts";
 import { useEffect, useState } from "react";
-
-import styles from "../styles/pages/HomePage.module.scss"
 import InfoButton from "../components/InfoButton.tsx";
 import { useNavigate } from "react-router";
 import { usePopup } from "../hook/usePopup.tsx";
 import { usePanel } from "../hook/usePanel.tsx";
 import { PanelType } from "../utils/types.ts";
+
+import styles from "../styles/pages/HomePage.module.scss"
 
 export default function HomePage() {
 
@@ -42,13 +42,17 @@ export default function HomePage() {
     }
 
     const move = (where: string) => {
+        if (apiOnline !== ApiStatus.ONLINE) {
+            showPanel("Sorry, you can't access this resources because the office is close", PanelType.WARNING, "Office closed")
+            return
+        }
         hidePopup()
         navigate(where)
     }
 
     return <div className={ styles.page }>
         <header className={styles.header}>
-            <h1>F.O.O.L.</h1>
+            <h1 onClick={() => showPanel("You're the fool", PanelType.INFO)}>F.O.O.L.</h1>
             <h2 className="orange">Federal Office Of Obvious Logic</h2>
         </header>
         <div className={styles.boxed}>
@@ -74,7 +78,7 @@ export default function HomePage() {
             </div>
         </div>
         { user && (
-            <p className={styles.loggedAs}>Currently logged as {user.name}</p>
+            <p onClick={() => showPanel("What did you expect to see by clicking here ?", PanelType.WARNING)} className={styles.loggedAs}>Currently logged as {user.name}</p>
         )}
     </div>
 }
