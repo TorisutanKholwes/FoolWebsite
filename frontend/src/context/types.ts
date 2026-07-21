@@ -1,6 +1,6 @@
 import * as React from "react";
 import ApiClient from "../api/client.ts";
-import { EmptyFunction } from "../utils/types.ts";
+import { EmptyFunction, PanelType } from "../utils/types.ts";
 import { ApiStatus } from "../api/types.ts";
 
 export type ApiContextType = {
@@ -16,6 +16,10 @@ export type ApiContextType = {
 export type PopupContextType = {
     showPopup: (message: string, imageLeft?: string|null, exclamation?: boolean) => void
     hidePopup: EmptyFunction
+}
+
+export type PanelContextType = {
+    showPanel: (message: string, type: PanelType, title?: string|null) => void
 }
 
 export interface ProvidersProps {

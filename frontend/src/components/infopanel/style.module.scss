@@ -1,0 +1,64 @@
+@use '../../styles/color';
+
+.panel {
+  padding: 5px;
+  background: color.$light-gray;
+  border: 4px solid color.$gray;
+  box-shadow: 0 0 0 4px black;
+
+  color: black;
+
+  width: 66vw;
+  height: 50vh;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  gap: 10px;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageDiv {
+  flex: 1;
+
+  & > img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.textDiv {
+  padding-left: 25px;
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+}
+
+.textTitle {
+  margin-top: 10px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 38px;
+  text-align: center;
+  color: color.$purple;
+  text-shadow: 2px 2px 0 #9c009c, 4px 4px 0 white;
+}
+
+.message {
+  font-size: 1.7rem;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}

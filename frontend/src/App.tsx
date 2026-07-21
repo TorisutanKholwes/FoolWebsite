@@ -2,11 +2,12 @@ import { AppProviders } from "./context/AppProviders.tsx";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router";
 import HomePage from "./pages/HomePage.tsx";
 import Page404 from "./pages/Page404.tsx";
-
-import "./styles/global.scss"
 import TestPage from "./pages/TestPage.tsx";
 import RegisterPage from "./pages/RegisterPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
+import ApiOnlineLayout from "./layout/ApiOnlineLayout.tsx";
+
+import "./styles/global.scss"
 
 const RootLayout = () => {
     return <AppProviders>
@@ -26,11 +27,11 @@ export default function App() {
                 },
                 {
                     path: "/register",
-                    element: <RegisterPage />
+                    element: <ApiOnlineLayout><RegisterPage /></ApiOnlineLayout>
                 },
                 {
                     path: "/login",
-                    element: <LoginPage />
+                    element: <ApiOnlineLayout><LoginPage /></ApiOnlineLayout>
                 },
                 {
                     path: '*',

@@ -6,12 +6,15 @@ import styles from "../styles/pages/HomePage.module.scss"
 import InfoButton from "../components/InfoButton.tsx";
 import { useNavigate } from "react-router";
 import { usePopup } from "../hook/usePopup.tsx";
+import { usePanel } from "../hook/usePanel.tsx";
+import { PanelType } from "../utils/types.ts";
 
 export default function HomePage() {
 
     const { isAuthenticated, api, apiOnline, logout } = useApi()
     const navigate = useNavigate();
     const { hidePopup } = usePopup();
+    const { showPanel } = usePanel()
 
     const [user, setUser] = useState<User | null>(null)
 
@@ -32,7 +35,7 @@ export default function HomePage() {
 
     const goTo = (where: string) => {
         if (!user) {
-            alert("TODO: Change that but you're still not connected")
+            showPanel("You need to login before accessing this page", PanelType.ERROR, "Login required")
             return
         }
         move(where)
