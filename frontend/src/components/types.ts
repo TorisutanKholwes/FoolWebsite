@@ -19,7 +19,6 @@ export type InfoPanelProps = {
 
 export type PopupProps = {
     text: string;
-    imageLeft?: string | null;
     exclamation?: boolean;
-    duration?: number;
+    animated?: boolean;
 }

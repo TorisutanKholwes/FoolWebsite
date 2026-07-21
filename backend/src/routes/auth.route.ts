@@ -21,6 +21,9 @@ authRoutes.post("/register", validate, async (req, res) => {
     if (!username || !password) {
         return errorResponse(res, "Username or password is missing", 400);
     }
+    if (await userExists(username)) {
+        return errorResponse(res, "Username already exists", 401);
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
     try {
         const id = await insertUser(username, hashedPassword)

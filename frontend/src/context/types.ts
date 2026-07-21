@@ -14,7 +14,7 @@ export type ApiContextType = {
 }
 
 export type PopupContextType = {
-    showPopup: (message: string, imageLeft?: string|null, exclamation?: boolean) => void
+    showPopup: (message: string, exclamation?: boolean, animated?: boolean) => void
     hidePopup: EmptyFunction
 }
 

@@ -11,24 +11,24 @@ const PopupContext = React.createContext<PopupContextType>({
 
 const PopupProvider: React.FC<ProvidersProps> = ({ children }) => {
     const [message, setMessage] = useState<string | null>(null);
-    const [imageLeft, setImageLeft] = useState<string | null>(null);
     const [exclamation, setExclamation] = useState<boolean>(false);
+    const [animated, setAnimated] = useState<boolean>(true);
 
-    const showPopup = (message: string, imageLeft?: string|null, exclamation?: boolean) => {
+    const showPopup = (message: string, exclamation?: boolean, animated?: boolean) => {
         setMessage(message)
-        setImageLeft(imageLeft || null)
         setExclamation(exclamation || false)
+        setAnimated(animated || true);
     }
 
     const hidePopup = () => {
-        setImageLeft(null);
         setMessage(null)
         setExclamation(false)
+        setAnimated(false)
     }
 
     return <PopupContext.Provider value={{ showPopup, hidePopup }}>
         {children}
-        {message && <Popup text={message} imageLeft={imageLeft} exclamation={exclamation} /> }
+        {message && <Popup text={message} animated={animated} exclamation={exclamation} /> }
     </PopupContext.Provider>
 }
 

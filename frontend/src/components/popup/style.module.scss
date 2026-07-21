@@ -12,7 +12,9 @@
   top: 8px;
   width: 400px;
   height: 100px;
+}
 
+.animated {
   animation: popupIn 0.66s ease-out forwards;
   will-change: transform;
 }
