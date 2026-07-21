@@ -1,0 +1,55 @@
+@use "../color";
+
+.askPage {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.askContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 15px;
+
+  width: 650px;
+  height: 450px;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 15px;
+  border: solid 2px color.$light-gray;
+}
+
+.inputContainer {
+  display: flex;
+  gap: 15px;
+}
+
+.title {
+  font-size: 3.5rem;
+  padding-bottom: 15px;
+}
+
+.messageText {
+  font-size: 1.3rem;
+  margin: 5px 0;
+}
+
+.messages {
+  max-height: 450px;
+  overflow-y: auto;
+}
+
+.backButton {
+  width: 350px;
+}
+
+.askInput {
+  flex: 3;
+}
+
+.submit {
+  flex: 1;
+}

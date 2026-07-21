@@ -51,6 +51,12 @@ export type MessagesResponse = {
     content: Message[]
 }
 
+export type AskResponse = {
+    message: string,
+    date: Date,
+    id: number
+}
+
 export type UserResponse = {
     user: User
 }

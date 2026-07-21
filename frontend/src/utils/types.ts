@@ -9,3 +9,9 @@ export enum PanelType {
     WARNING = 'warning',
     ERROR = 'error'
 }
+
+export type MessageObject = {
+    author: string,
+    color: string,
+    content: string
+}

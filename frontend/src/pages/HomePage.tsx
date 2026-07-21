@@ -30,6 +30,8 @@ export default function HomePage() {
         if (response.ok && response.status === 200) {
             const data = (await response.json()) as ApiResponse<UserResponse>
             setUser(data.user)
+        } else if (isAuthenticated) {
+            logout()
         }
     }
 

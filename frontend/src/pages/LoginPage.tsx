@@ -63,6 +63,7 @@ export default function LoginPage() {
         <div className={styles.buttonDiv}>
             <Button onClick={handleLogin}>Login</Button>
             <Button onClick={() => showPanel("Just remember it ?", PanelType.ERROR, "Password forgotten")}>Forgot your password ?</Button>
+            <Button onClick={() => navigate("/")}>Go back</Button>
         </div>
     </div>
 }

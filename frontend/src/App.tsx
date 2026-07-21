@@ -7,6 +7,8 @@ import RegisterPage from "./pages/RegisterPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import ApiOnlineLayout from "./layout/ApiOnlineLayout.tsx";
 import { useImagePreload } from "./hook/useImagePreload.tsx";
+import AuthenticatedLayout from "./layout/AuthenticatedLayout.tsx";
+import AskPage from "./pages/AskPage.tsx";
 
 import "./styles/global.scss"
 
@@ -34,6 +36,10 @@ export default function App() {
                 {
                     path: "/login",
                     element: <ApiOnlineLayout><LoginPage /></ApiOnlineLayout>
+                },
+                {
+                    path: "/asker",
+                    element: <ApiOnlineLayout><AuthenticatedLayout><AskPage /></AuthenticatedLayout></ApiOnlineLayout>
                 },
                 {
                     path: '*',
