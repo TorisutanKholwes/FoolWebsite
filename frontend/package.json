@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "host": "vite --host",
     "start": ""
   },
   "homepage": "https://github.com/TorisutanKholwes/FoolWebsite#readme",

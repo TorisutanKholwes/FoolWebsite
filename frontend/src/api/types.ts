@@ -51,6 +51,10 @@ export type MessagesResponse = {
     content: Message[]
 }
 
+export type UserResponse = {
+    user: User
+}
+
 export type ApiResponse<T> = T & {
     status: string,
 }

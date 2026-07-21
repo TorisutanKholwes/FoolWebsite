@@ -1,5 +1,5 @@
 import { useApi } from "../hook/useApi.tsx";
-import { ApiResponse, ApiStatus, User } from "../api/types.ts";
+import { ApiResponse, ApiStatus, User, UserResponse } from "../api/types.ts";
 import { useEffect, useState } from "react";
 import InfoButton from "../components/InfoButton.tsx";
 import { useNavigate } from "react-router";
@@ -28,8 +28,8 @@ export default function HomePage() {
     const fetchUser = async () => {
         const response = await api.get("/auth/me")
         if (response.ok && response.status === 200) {
-            const data = (await response.json()) as ApiResponse<User>
-            setUser(data)
+            const data = (await response.json()) as ApiResponse<UserResponse>
+            setUser(data.user)
         }
     }
 
@@ -50,6 +50,11 @@ export default function HomePage() {
         navigate(where)
     }
 
+    const disconnect = () =>  {
+        logout()
+        window.location.reload()
+    }
+
     return <div className={ styles.page }>
         <header className={styles.header}>
             <h1 onClick={() => showPanel("You're the fool", PanelType.INFO)}>F.O.O.L.</h1>
@@ -67,7 +72,7 @@ export default function HomePage() {
                 { user ? (
                     <>
                         <InfoButton onClick={() => goTo("/profile")} infoText={"The place where you can see all your beautiful personal information"}>Profile information</InfoButton>
-                        <InfoButton infoText={"If you want to leave us, click here"} onClick={() => logout()}>Logout</InfoButton>
+                        <InfoButton infoText={"If you want to leave us, click here"} onClick={disconnect}>Logout</InfoButton>
                     </>
                 ) : (
                     <>

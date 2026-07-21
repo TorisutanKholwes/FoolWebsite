@@ -1,0 +1,68 @@
+@use "../color";
+
+.loginPage, .registerPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
+  gap: 20px;
+}
+
+.headerDiv {
+  padding: 15px 0;
+}
+
+.title {
+  font-size: 3.5rem;
+  padding-bottom: 15px;
+}
+
+.descDiv {
+  background: rgba(0, 0, 0, 0.8);
+  border: solid 2px color.$dark-gray;
+  padding: 0 20px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.inputDiv {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+
+  & > div {
+    width: 300px;
+  }
+}
+
+.buttonDiv {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  & > button {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+}
+
+.changePage {
+  cursor: pointer;
+}
+
+.bigPadding {
+  padding-left: 75px !important;
+  padding-right: 75px !important;
+}

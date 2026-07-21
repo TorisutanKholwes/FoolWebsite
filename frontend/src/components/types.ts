@@ -3,6 +3,8 @@ import { EmptyFunction, PanelType } from "../utils/types.ts";
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>
 
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement>
+
 export type InfoButtonProps = ButtonProps & {
     infoText: string;
     exclamation?: boolean;

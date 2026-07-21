@@ -3,6 +3,7 @@ import InfoButton from "../components/InfoButton.tsx";
 import { usePanel } from "../hook/usePanel.tsx";
 import Button from "../components/button/Button.tsx";
 import { PanelType } from "../utils/types.ts";
+import Input from "../components/input/Input.tsx";
 
 export default function TestPage() {
 
@@ -20,6 +21,7 @@ export default function TestPage() {
             <Button onClick={() => showPanel("This is an info panel", PanelType.INFO)}>Info panel</Button>
             <Button onClick={() => showPanel("This is a warning panel", PanelType.WARNING)}>Warning panel</Button>
             <Button onClick={() => showPanel("This is an error panel", PanelType.ERROR)}>Error panel</Button>
+            <Input type="password" />
         </div>
     )
 

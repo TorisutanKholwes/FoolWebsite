@@ -6,10 +6,12 @@ import TestPage from "./pages/TestPage.tsx";
 import RegisterPage from "./pages/RegisterPage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import ApiOnlineLayout from "./layout/ApiOnlineLayout.tsx";
+import { useImagePreload } from "./hook/useImagePreload.tsx";
 
 import "./styles/global.scss"
 
 const RootLayout = () => {
+    useImagePreload()
     return <AppProviders>
         <Outlet />
     </AppProviders>
