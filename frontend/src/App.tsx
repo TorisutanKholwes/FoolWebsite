@@ -5,6 +5,8 @@ import Page404 from "./pages/Page404.tsx";
 
 import "./styles/global.scss"
 import TestPage from "./pages/TestPage.tsx";
+import RegisterPage from "./pages/RegisterPage.tsx";
+import LoginPage from "./pages/LoginPage.tsx";
 
 const RootLayout = () => {
     return <AppProviders>
@@ -21,6 +23,14 @@ export default function App() {
                 {
                     index: true,
                     element: <HomePage />
+                },
+                {
+                    path: "/register",
+                    element: <RegisterPage />
+                },
+                {
+                    path: "/login",
+                    element: <LoginPage />
                 },
                 {
                     path: '*',
