@@ -1,0 +1,31 @@
+@use "../../styles/color";
+
+.btn {
+  padding: 10px 0;
+  font-family: 'VT323', monospace;
+  font-size: 1.5rem;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+  text-transform: uppercase;
+  color: color.$white;
+  background: color.$gray;
+  border: 3px solid black;
+  box-shadow: inset 3px 3px 0 color.$white, inset -3px -3px 0 color.$dark-gray;
+  text-shadow: 2px 2px 0 color.$dark-gray;
+
+  &:hover {
+    background: #5d78a7;
+    border-color: color.$white;
+    box-shadow: inset 3px 3px 0 #8faadc, inset -3px -3px 0 #2b3b5c;
+    text-shadow: 2px 2px 0 #2b3b5c;
+  }
+
+  &:active {
+    transform: translate(2px, 2px);
+    background: #4a618a;
+    border-color: color.$dark-gray;
+    box-shadow: inset 1px 1px 0 #8faadc, inset -1px -1px 0 #2b3b5c;
+    text-shadow: 1px 1px 0 #2b3b5c;
+  }
+}

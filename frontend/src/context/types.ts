@@ -13,6 +13,11 @@ export type ApiContextType = {
     loading: boolean
 }
 
+export type PopupContextType = {
+    showPopup: (message: string, imageLeft?: string|null, exclamation?: boolean) => void
+    hidePopup: EmptyFunction
+}
+
 export interface ProvidersProps {
     children: React.ReactNode
 }

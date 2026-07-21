@@ -3,8 +3,9 @@ import bcrypt from "bcrypt";
 import { validate } from "@/middleware/auth.middleware.ts";
 import jwt from "jsonwebtoken";
 import { errorResponse, successResponse } from "@/utils/response.ts";
-import { verify } from "@/middleware/user.middleware.ts";
-import { getUserByName, insertUser, userExists } from "@/database/users.ts";
+import { authenticate, verify } from "@/middleware/user.middleware.ts";
+import { getUserById, getUserByName, insertUser, userExists } from "@/database/users.ts";
+import { AuthenticatedRequest } from "@/database/types.ts";
 
 const authRoutes = express.Router()
 
@@ -55,6 +56,18 @@ authRoutes.get("/validate", (req, res) => {
     const { payload } = verify(req.header("Authorization"));
     const valid = !!payload;
     return successResponse(res, { valid: valid });
+})
+
+authRoutes.get("/me", authenticate, async (req: AuthenticatedRequest, res) => {
+    if (!req.id) {
+        return errorResponse(res, "Invalid id", 401);
+    }
+    const user = await getUserById(req.id);
+    if (!user) {
+        return errorResponse(res, "User not found", 404);
+    }
+    user.password = ""
+    return successResponse(res, { user: user });
 })
 
 

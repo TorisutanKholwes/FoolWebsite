@@ -1,5 +1,10 @@
 import { AppProviders } from "./context/AppProviders.tsx";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router";
+import HomePage from "./pages/HomePage.tsx";
+import Page404 from "./pages/Page404.tsx";
+
+import "./styles/global.scss"
+import TestPage from "./pages/TestPage.tsx";
 
 const RootLayout = () => {
     return <AppProviders>
@@ -15,7 +20,15 @@ export default function App() {
             children: [
                 {
                     index: true,
-                    element: <h1>Hello World</h1>
+                    element: <HomePage />
+                },
+                {
+                    path: '*',
+                    element: <Page404 />
+                },
+                {
+                    path: "test",
+                    element: <TestPage />
                 }
             ]
         }

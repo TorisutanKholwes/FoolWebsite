@@ -1,0 +1,31 @@
+@use 'color';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body {
+  background:
+          linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+          url("../assets/images/background.png") no-repeat center center fixed;
+  //background: darkslategray;
+  background-size: cover;
+  color: color.$white;
+  font-family: 'VT323', monospace;
+  overflow-x: hidden;
+}
+
+footer {
+  font-family: Arial, sans-serif;
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.orange {
+  color: color.$orange
+}

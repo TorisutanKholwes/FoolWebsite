@@ -22,7 +22,7 @@ const ApiProvider: React.FC<ProvidersProps> = ({ children }) => {
     const [loading, setLoading] = useState<boolean>(true)
 
     const apiClient = useMemo(() => {
-        const apiBaseUrl = import.meta.env.API_BASE_URL || ""
+        const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || ""
         const client = new ApiClient(apiBaseUrl)
         if (token) {
             client.setToken(token)
