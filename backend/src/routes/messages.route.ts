@@ -3,8 +3,12 @@ import { errorResponse, successResponse } from "@/utils/response.ts";
 import { GROQ_URL } from "@/constants/constants.ts";
 import { PROMPT_BODY } from "@/constants/prompts.ts";
 import { authenticate } from "@/middleware/user.middleware.ts";
-import { getAllMessages, getMessagesByUser, insertMessage } from "@/database/messages.ts";
-import { AuthenticatedRequest, Message } from "@/database/types.ts";
+import {
+    getMessagesByUser,
+    getMessagesWithFilter,
+    insertMessage
+} from "@/database/messages.ts";
+import { AuthenticatedRequest } from "@/database/types.ts";
 
 const messagesRoute = express.Router();
 
@@ -61,15 +65,12 @@ messagesRoute.get("/me", authenticate, async (req: AuthenticatedRequest, res) =>
 })
 
 messagesRoute.get("/", async (req, res) => {
-    const { filter } = req.body
-    const messages = await getAllMessages()
-    const filteredMessages = applyFilter(messages, filter)
-    return successResponse(res, { content: filteredMessages });
+    if (!req.query) {
+        return errorResponse(res, "Error while retrieving your query", 500);
+    }
+    const { limit, offset, filter } = req.query;
+    const messages = await getMessagesWithFilter(Number(limit), Number(offset), String(filter));
+    return successResponse(res, { content: messages });
 })
-
-function applyFilter(messages: Message[], _: string): Message[] {
-    //TODO
-    return messages
-}
 
 export default messagesRoute

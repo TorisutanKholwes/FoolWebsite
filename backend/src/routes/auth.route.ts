@@ -27,7 +27,7 @@ authRoutes.post("/register", validate, async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     try {
         const id = await insertUser(username, hashedPassword)
-        const token = jwt.sign({ id: Number(id) }, JWT_SECRET, { expiresIn: "7d" })
+        const token = jwt.sign({ id: Number(id) }, JWT_SECRET, { expiresIn: "1d" })
         return successResponse(res, { message: "User registered successfully", token: token });
     } catch {
         return errorResponse(res, "Registration failed", 500);
@@ -51,7 +51,7 @@ authRoutes.post("/login", async (req, res) => {
     if (!passwordMatch) {
         return errorResponse(res, "Invalid username or password", 401);
     }
-    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "1h" })
+    const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "1d" })
     return successResponse(res, { message: "Login successful", token: token });
 })
 

@@ -30,6 +30,10 @@ export type Message = {
     datetime: Date;
 }
 
+export type MessageWithUsername = Message & {
+    username: string;
+}
+
 export type BasicResponse = {
     message: string;
 }
@@ -49,6 +53,10 @@ export type UnknowResponse = {
 
 export type MessagesResponse = {
     content: Message[]
+}
+
+export type MessageWithUsernameResponse = {
+    content: MessageWithUsername[]
 }
 
 export type AskResponse = {

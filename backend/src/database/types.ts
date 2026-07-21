@@ -17,6 +17,10 @@ export type Message = {
     datetime: Date;
 }
 
+export type MessageWithUsername = Message & {
+    username: string;
+}
+
 export interface AuthenticatedRequest extends Request {
     id?: number;
 }

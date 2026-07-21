@@ -9,6 +9,7 @@ import { ApiResponse, AskResponse, User, UserResponse } from "../api/types.ts";
 
 import styles from "../styles/pages/AskPage.module.scss"
 import * as React from "react";
+import { AUTHOR_MESSAGE_COLOR, RESPONSE_MESSAGE_COLOR } from "../utils/utils.ts";
 
 export default function AskPage() {
 
@@ -42,7 +43,7 @@ export default function AskPage() {
         const newMessage: MessageObject = {
             content: message,
             author: self ? `You (${user?.name})` : 'F.O.O.L. Agent',
-            color: self ? "green" : "red",
+            color: self ? AUTHOR_MESSAGE_COLOR : RESPONSE_MESSAGE_COLOR,
         }
         setMessages(prev => [...prev, newMessage]);
     }
