@@ -11,6 +11,32 @@ export async function insertMessage(user_id: number, message: string, response: 
     return result.rows[0].id;
 }
 
+export async function getMessageById(message_id: number): Promise<Message|null> {
+    const db = getDb()
+    const result = await db.query(
+        `SELECT * FROM messages WHERE id = $1`,
+        [message_id]
+    )
+    if (result.rows.length === 0) {
+        return null;
+    }
+    return rowToMessage(result.rows[0]);
+}
+
+export async function updateMessage(message_id: number, message: Message) {
+    const db = getDb()
+    const result = await db.query(
+        `UPDATE messages
+         SET message = $1,
+             response = $2,
+             upvote = $3,
+             downvote = $4
+         WHERE id = $5`,
+        [message.message, message.response, message.upvote, message.downvote, message_id]
+    )
+    return result.rowCount || 0;
+}
+
 export async function getMessagesByUser(user_id: number) {
     const db = getDb()
     const result = await db.query(

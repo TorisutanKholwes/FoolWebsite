@@ -42,6 +42,16 @@ export async function initializeDB() {
     )
     `)
 
+    await database.query(`
+    CREATE TABLE IF NOT EXISTS votes (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL REFERENCES users(id),
+        message_id INTEGER NOT NULL REFERENCES messages(id),
+        vote_type VARCHAR(10) NOT NULL,
+        datetime TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+    `)
+
     logger.info("Database is started and tables are created")
 }
 

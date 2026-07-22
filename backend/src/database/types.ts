@@ -21,6 +21,19 @@ export type MessageWithUsername = Message & {
     username: string;
 }
 
+export type Vote = {
+    id: number;
+    user_id: number;
+    message_id: number;
+    type: string;
+    date: Date;
+}
+
+export type FilledVote = Vote & {
+    username: string;
+    message: string;
+}
+
 export interface AuthenticatedRequest extends Request {
     id?: number;
 }
