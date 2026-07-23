@@ -4,8 +4,6 @@ import { usePanel } from "../hook/usePanel.tsx";
 import Button from "../components/button/Button.tsx";
 import { PanelType } from "../utils/types.ts";
 import Input from "../components/input/Input.tsx";
-import Modal from "../components/modal/Modal.tsx";
-import { newEmptyFunction } from "../utils/utils.ts";
 
 export default function TestPage() {
 
@@ -24,7 +22,6 @@ export default function TestPage() {
             <Button onClick={() => showPanel("This is a warning panel", PanelType.WARNING)}>Warning panel</Button>
             <Button onClick={() => showPanel("This is an error panel", PanelType.ERROR)}>Error panel</Button>
             <Input type="password" />
-            <Modal onClose={newEmptyFunction()}>Hello World</Modal>
         </div>
     )
 
