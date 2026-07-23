@@ -6,10 +6,11 @@ import { useNavigate } from "react-router";
 import { useApi } from "../hook/useApi.tsx";
 import { usePopup } from "../hook/usePopup.tsx";
 import { usePanel } from "../hook/usePanel.tsx";
-
-import styles from "../styles/pages/LoginRegisterPage.module.scss"
 import { PanelType } from "../utils/types.ts";
 import { ApiResponse, AuthResponse, ErrorResponse } from "../api/types.ts";
+import { useUser } from "../hook/useUser.tsx";
+
+import styles from "../styles/pages/LoginRegisterPage.module.scss"
 
 export default function RegisterPage() {
 
@@ -17,6 +18,7 @@ export default function RegisterPage() {
     const { api, isAuthenticated, apiOnline, loading, login } = useApi()
     const { showPopup, hidePopup } = usePopup()
     const { showPanel } = usePanel()
+    const { auth } = useUser()
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -116,6 +118,7 @@ export default function RegisterPage() {
         }
         const formatResponse = (await response.json()) as ApiResponse<AuthResponse>
         login(formatResponse.token)
+        auth()
         navigate("/")
     }
 

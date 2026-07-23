@@ -6,8 +6,8 @@ import minecraft from "../assets/audio/Minecraft.mp3"
 
 const SoundContext = createContext<SoundContextType>({
     playing: false,
-    play: newEmptyFunction,
-    stop: newEmptyFunction
+    play: newEmptyFunction(),
+    stop: newEmptyFunction()
 })
 
 const SoundProvider: FC<ProvidersProps> = ( { children } ) => {

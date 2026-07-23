@@ -1,38 +1,26 @@
-import { useEffect, useState } from "react";
-import { ApiResponse, User, UserResponse } from "../api/types.ts";
+import { useEffect } from "react";
 import { useApi } from "../hook/useApi.tsx";
 import Button from "../components/button/Button.tsx";
 import { usePanel } from "../hook/usePanel.tsx";
 import { PanelType } from "../utils/types.ts";
+import { useNavigate } from "react-router";
+import { useUser } from "../hook/useUser.tsx";
 
 import styles from "../styles/pages/ProfilePage.module.scss"
-import { useNavigate } from "react-router";
 
 export default function ProfilePage() {
 
-    const { isAuthenticated, api, logout } = useApi()
+    const { isAuthenticated } = useApi()
     const { showPanel } = usePanel()
+    const { user } = useUser()
+
     const navigate = useNavigate()
-
-    const [user, setUser] = useState<User>();
-
 
     useEffect(() => {
         if (!isAuthenticated) {
             return;
         }
-        fetchUser()
     }, [])
-
-    const fetchUser = async () => {
-        const response = await api.get("/auth/me")
-        if (response.ok && response.status === 200) {
-            const data = (await response.json()) as ApiResponse<UserResponse>
-            setUser(data.user)
-        } else if (isAuthenticated) {
-            logout()
-        }
-    }
 
     return (
         <div className={styles.profilePage}>

@@ -1,6 +1,6 @@
 import { useApi } from "../hook/useApi.tsx";
-import { ApiResponse, ApiStatus, User, UserResponse } from "../api/types.ts";
-import { useEffect, useState } from "react";
+import { ApiStatus } from "../api/types.ts";
+import { useEffect } from "react";
 import InfoButton from "../components/InfoButton.tsx";
 import { useNavigate } from "react-router";
 import { usePopup } from "../hook/usePopup.tsx";
@@ -8,41 +8,24 @@ import { usePanel } from "../hook/usePanel.tsx";
 import { PanelType } from "../utils/types.ts";
 
 import styles from "../styles/pages/HomePage.module.scss"
+import { useUser } from "../hook/useUser.tsx";
 
 export default function HomePage() {
 
-    const { isAuthenticated, api, apiOnline, logout } = useApi()
+    const { isAuthenticated, apiOnline, logout } = useApi()
     const navigate = useNavigate();
     const { hidePopup } = usePopup();
     const { showPanel } = usePanel()
 
-    const [user, setUser] = useState<User | null>(null)
-    const [loading, setLoading] = useState<boolean>(false)
+    const { user, reset } = useUser()
 
     useEffect(() => {
         if (!isAuthenticated) {
             return;
         }
-        setLoading(true)
-        fetchUser().then(() => {
-            setLoading(false)
-        })
     }, [])
 
-    const fetchUser = async () => {
-        const response = await api.get("/auth/me")
-        if (response.ok && response.status === 200) {
-            const data = (await response.json()) as ApiResponse<UserResponse>
-            setUser(data.user)
-        } else if (isAuthenticated) {
-            logout()
-        }
-    }
-
     const goTo = (where: string) => {
-        if (loading) {
-            return
-        }
         if (!user) {
             showPanel("You need to login before accessing this page", PanelType.ERROR, "Login required")
             return
@@ -51,9 +34,6 @@ export default function HomePage() {
     }
 
     const move = (where: string, needApi: boolean = true) => {
-        if (loading) {
-            return;
-        }
         if (needApi && apiOnline !== ApiStatus.ONLINE) {
             showPanel("Sorry, you can't access this resources because the office is close", PanelType.WARNING, "Office closed")
             return
@@ -63,10 +43,8 @@ export default function HomePage() {
     }
 
     const disconnect = () =>  {
-        if (loading) {
-            return;
-        }
         logout()
+        reset()
         window.location.reload()
     }
 
@@ -74,7 +52,7 @@ export default function HomePage() {
         <header className={styles.header}>
             <div className={styles.titleDiv}>
                 <h1 className={styles.title} onClick={() => showPanel("You're the fool", PanelType.INFO)}>F.O.O.L.</h1>
-                <span className={styles.splash}>Splash text</span>
+                <span className={styles.splash}>Don't be too smart</span>
             </div>
             <h2 className="orange">Federal Office Of Obvious Logic</h2>
         </header>

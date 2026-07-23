@@ -5,22 +5,22 @@ import { useEffect, useRef, useState } from "react";
 import { MessageObject, PanelType } from "../utils/types.ts";
 import { usePanel } from "../hook/usePanel.tsx";
 import { useApi } from "../hook/useApi.tsx";
-import { ApiResponse, AskResponse, MessagesResponse, User, UserResponse } from "../api/types.ts";
+import { ApiResponse, AskResponse, MessagesResponse, User } from "../api/types.ts";
 import * as React from "react";
 import { AUTHOR_MESSAGE_COLOR, RESPONSE_MESSAGE_COLOR } from "../utils/utils.ts";
 import { usePopup } from "../hook/usePopup.tsx";
+import { useUser } from "../hook/useUser.tsx";
 
 import styles from "../styles/pages/AskPage.module.scss"
-
 
 export default function AskPage() {
 
     const navigate = useNavigate();
     const { showPanel } = usePanel()
     const { showPopup, hidePopup } = usePopup()
-    const { api, isAuthenticated, logout } = useApi()
+    const { api, isAuthenticated } = useApi()
+    const { user } = useUser()
 
-    const [user, setUser] = useState<User | null>(null)
     const [content, setContent] = useState("");
     const [messages, setMessages] = useState<MessageObject[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -31,12 +31,7 @@ export default function AskPage() {
         if (!isAuthenticated) {
             return;
         }
-        fetchUser().then((u) => {
-            if (!u) {
-                return
-            }
-            fetchMessages(u)
-        })
+        fetchMessages()
     }, [])
 
     useEffect(() => {
@@ -44,17 +39,6 @@ export default function AskPage() {
             messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
         }
     }, [messages]);
-
-    const fetchUser = async () => {
-        const response = await api.get("/auth/me")
-        if (response.ok && response.status === 200) {
-            const data = (await response.json()) as ApiResponse<UserResponse>
-            setUser(data.user)
-            return data.user
-        } else if (isAuthenticated) {
-            logout()
-        }
-    }
 
     const fetchMessages = async (u?: User) => {
         const response = await api.get("/messages/me")

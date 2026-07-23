@@ -14,14 +14,29 @@ import ProfilePage from "./pages/ProfilePage.tsx";
 import LeaderboardPage from "./pages/LeaderboardPage.tsx"
 import SettingsPage from "./pages/SettingsPage.tsx";
 import { useEffect } from "react";
+import { useUser } from "./hook/useUser.tsx";
 
 import "./styles/global.scss";
+import { useApi } from "./hook/useApi.tsx";
 
 const RootLayout = () => {
     useImagePreload()
+
     return <AppProviders>
         <Outlet />
     </AppProviders>
+}
+
+const ProtectedLayout = () => {
+
+    const { auth } = useUser()
+    const { token } = useApi()
+
+    useEffect(() => {
+        auth()
+    }, [token]);
+
+    return <Outlet />
 }
 
 export default function App() {
@@ -41,45 +56,50 @@ export default function App() {
             element: <RootLayout />,
             children: [
                 {
-                    index: true,
-                    element: <HomePage />
+                    element: <ProtectedLayout />,
+                    children: [
+                        {
+                            index: true,
+                            element: <HomePage />
+                        },
+                        {
+                            path: "/register",
+                            element: <ApiOnlineLayout><RegisterPage /></ApiOnlineLayout>
+                        },
+                        {
+                            path: "/login",
+                            element: <ApiOnlineLayout><LoginPage /></ApiOnlineLayout>
+                        },
+                        {
+                            path: "/asker",
+                            element: <ApiOnlineLayout><AuthenticatedLayout><AskPage /></AuthenticatedLayout></ApiOnlineLayout>
+                        },
+                        {
+                            path: "/vote",
+                            element: <ApiOnlineLayout><AuthenticatedLayout><VotePage /></AuthenticatedLayout></ApiOnlineLayout>
+                        },
+                        {
+                            path: "/profile",
+                            element: <ApiOnlineLayout><AuthenticatedLayout><ProfilePage /></AuthenticatedLayout></ApiOnlineLayout>
+                        },
+                        {
+                            path: "/leaderboard",
+                            element: <ApiOnlineLayout><AuthenticatedLayout><LeaderboardPage /></AuthenticatedLayout></ApiOnlineLayout>
+                        },
+                        {
+                            path: "/settings",
+                            element: <SettingsPage />
+                        },
+                        {
+                            path: '*',
+                            element: <Page404 />
+                        },
+                        {
+                            path: "test",
+                            element: <TestPage />
+                        }
+                    ]
                 },
-                {
-                    path: "/register",
-                    element: <ApiOnlineLayout><RegisterPage /></ApiOnlineLayout>
-                },
-                {
-                    path: "/login",
-                    element: <ApiOnlineLayout><LoginPage /></ApiOnlineLayout>
-                },
-                {
-                    path: "/asker",
-                    element: <ApiOnlineLayout><AuthenticatedLayout><AskPage /></AuthenticatedLayout></ApiOnlineLayout>
-                },
-                {
-                    path: "/vote",
-                    element: <ApiOnlineLayout><AuthenticatedLayout><VotePage /></AuthenticatedLayout></ApiOnlineLayout>
-                },
-                {
-                    path: "/profile",
-                    element: <ApiOnlineLayout><AuthenticatedLayout><ProfilePage /></AuthenticatedLayout></ApiOnlineLayout>
-                },
-                {
-                    path: "/leaderboard",
-                    element: <ApiOnlineLayout><AuthenticatedLayout><LeaderboardPage /></AuthenticatedLayout></ApiOnlineLayout>
-                },
-                {
-                    path: "/settings",
-                    element: <SettingsPage />
-                },
-                {
-                    path: '*',
-                    element: <Page404 />
-                },
-                {
-                    path: "test",
-                    element: <TestPage />
-                }
             ]
         }
     ])

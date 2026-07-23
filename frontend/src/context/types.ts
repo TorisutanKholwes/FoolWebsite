@@ -1,7 +1,7 @@
 import * as React from "react";
 import ApiClient from "../api/client.ts";
 import { EmptyFunction, PanelType } from "../utils/types.ts";
-import { ApiStatus } from "../api/types.ts";
+import { ApiStatus, User } from "../api/types.ts";
 
 export type ApiContextType = {
     api: ApiClient,
@@ -26,6 +26,13 @@ export type SoundContextType = {
     playing: boolean,
     play: EmptyFunction,
     stop: EmptyFunction,
+}
+
+export type UserContextType = {
+    user: User | null,
+    setUser: (user: User) => void,
+    auth: EmptyFunction,
+    reset: EmptyFunction
 }
 
 export interface ProvidersProps {

@@ -4,13 +4,16 @@ import { ApiProvider } from "./ApiContext.tsx";
 import { PopupProvider } from "./PopupContext.tsx";
 import { PanelProvider } from "./PanelContext.tsx";
 import { SoundProvider } from "./SoundContext.tsx";
+import { UserProvider } from "./UserContext.tsx";
 
 export const AppProviders: React.FC<ProvidersProps> = ({ children }) => {
     return <ApiProvider>
         <PopupProvider>
             <PanelProvider>
                 <SoundProvider>
-                    {children}
+                    <UserProvider>
+                        {children}
+                    </UserProvider>
                 </SoundProvider>
             </PanelProvider>
         </PopupProvider>
