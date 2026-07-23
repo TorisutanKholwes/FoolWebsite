@@ -122,6 +122,15 @@ export async function getBestMessages(limit: number): Promise<MessageWithUsernam
     return result.rows.map(rowToMessageWithUsername);
 }
 
+export async function messageExist(message_id: number) {
+    const db = getDb()
+    const result = await db.query(
+        `SELECT 1 FROM messages WHERE id = $1`,
+        [message_id]
+    )
+    return result.rows.length > 0;
+}
+
 function rowToMessage(row: QueryResultRow): Message {
     return {
         id: row.id,

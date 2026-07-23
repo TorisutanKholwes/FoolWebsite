@@ -32,6 +32,7 @@ export type Vote = {
 export type FilledVote = Vote & {
     username: string;
     message: string;
+    response: string;
 }
 
 export interface AuthenticatedRequest extends Request {

@@ -4,7 +4,15 @@ import { validate } from "@/middleware/auth.middleware.ts";
 import jwt from "jsonwebtoken";
 import { errorResponse, successResponse } from "@/utils/response.ts";
 import { authenticate, verify } from "@/middleware/user.middleware.ts";
-import { getUserById, getUserByName, insertUser, userExists } from "@/database/users.ts";
+import {
+    deleteUserById,
+    getAllUsers,
+    getUserById,
+    getUserByName,
+    insertUser,
+    userExists,
+    userExistsById
+} from "@/database/users.ts";
 import { AuthenticatedRequest } from "@/database/types.ts";
 
 const authRoutes = express.Router()
@@ -55,6 +63,17 @@ authRoutes.post("/login", async (req, res) => {
     return successResponse(res, { message: "Login successful", token: token });
 })
 
+authRoutes.get("/admin-grant", authenticate, async (req: AuthenticatedRequest, res) => {
+    if (!req.id) {
+        return errorResponse(res, "Invalid id", 401);
+    }
+    if (req.id === 1) {
+        return successResponse(res, "Admin grant", 200);
+    } else {
+        return errorResponse(res, "Admin grant", 403);
+    }
+})
+
 authRoutes.get("/validate", (req, res) => {
     const { payload } = verify(req.header("Authorization"));
     const valid = !!payload;
@@ -71,6 +90,35 @@ authRoutes.get("/me", authenticate, async (req: AuthenticatedRequest, res) => {
     }
     user.password = ""
     return successResponse(res, { user: user });
+})
+
+authRoutes.get("/users", authenticate, async (req: AuthenticatedRequest, res) => {
+    if (!req.id) {
+        return errorResponse(res, "Invalid id", 401);
+    }
+    if (req.id !== 1) {
+        return errorResponse(res, "You are not authorized to access this route", 403);
+    }
+    const users = await getAllUsers()
+    return successResponse(res, { users: users });
+})
+
+authRoutes.delete("/:id", authenticate, async (req: AuthenticatedRequest, res) => {
+    if (!req.id) {
+        return errorResponse(res, "Invalid id", 401);
+    }
+    if (req.id !== 1) {
+        return errorResponse(res, "You are not authorized to access this route", 403);
+    }
+    const id = Number(req.params.id);
+    if (!id) {
+        return errorResponse(res, "Invalid id", 401);
+    }
+    if (!(await userExistsById(id))) {
+        return errorResponse(res, "User does not exist", 403);
+    }
+    await deleteUserById(id)
+    return successResponse(res, "User deleted successfully", 200);
 })
 
 

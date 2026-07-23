@@ -4,10 +4,11 @@ import { GROQ_URL } from "@/constants/constants.ts";
 import { PROMPT_BODY } from "@/constants/prompts.ts";
 import { authenticate } from "@/middleware/user.middleware.ts";
 import {
+    deleteMessage,
     getBestMessages,
     getFullMessageById, getMessageByUserWithLimit,
-    getMessagesWithFilter,
-    insertMessage
+    getMessagesWithFilter, getMessagesWithUsername,
+    insertMessage, messageExist
 } from "@/database/messages.ts";
 import { AuthenticatedRequest } from "@/database/types.ts";
 
@@ -81,6 +82,17 @@ messagesRoute.get("/", async (req, res) => {
     return successResponse(res, { content: messages });
 })
 
+messagesRoute.get("/all", authenticate, async (req: AuthenticatedRequest, res) => {
+    if (!req.id) {
+        return errorResponse(res, "Error while retrieving your id", 500);
+    }
+    if (req.id !== 1) {
+        return errorResponse(res, "You are not authorized to access this route", 403);
+    }
+    const messages = await getMessagesWithUsername()
+    return successResponse(res, { content: messages });
+})
+
 messagesRoute.get("/best", async (req, res) => {
     let limit = 10
     if (req.query && req.query.limit) {
@@ -101,6 +113,24 @@ messagesRoute.get("/:id", async (req, res) => {
         return errorResponse(res, "Error while retrieving your query", 500);
     }
     return successResponse(res, { content: message });
+})
+
+messagesRoute.delete("/:id", authenticate, async (req: AuthenticatedRequest, res) => {
+    if (!req.id) {
+        return errorResponse(res, "Error while retrieving your query", 500);
+    }
+    if (req.id !== 1) {
+        return errorResponse(res, "You are not authorized to access this route", 403);
+    }
+    const id = Number(req.params.id);
+    if (!id) {
+        return errorResponse(res, "Error while retrieving your query", 500);
+    }
+    if (!(await messageExist(id))) {
+        return errorResponse(res, "Message does not exist", 404);
+    }
+    await deleteMessage(id);
+    return successResponse(res, { message: "Message deleted successfully" });
 })
 
 export default messagesRoute

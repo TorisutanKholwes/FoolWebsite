@@ -41,6 +41,7 @@ export type Vote = {
 export type FilledVote = Vote & {
     username: string;
     message: string;
+    response: string;
 }
 
 export type MessageWithUsername = Message & {
@@ -88,6 +89,10 @@ export type AskResponse = {
 
 export type UserResponse = {
     user: User
+}
+
+export type UsersResponse = {
+    users: User[]
 }
 
 export type VoteResponse = {

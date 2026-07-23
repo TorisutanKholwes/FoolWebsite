@@ -1,0 +1,110 @@
+@use "../../styles/color";
+
+body:has(.adminPage) {
+  background:
+          linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+          url("../../assets/images/background/admin.png") no-repeat center center fixed;
+  background-size: cover;
+}
+
+.adminPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+
+  gap: 25px;
+
+  height: 100vh;
+  width: 100%;
+}
+
+.title {
+  font-size: 3.5rem;
+  margin-bottom: 15px;
+}
+
+.subtitle {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.adminContainer {
+  display: flex;
+  flex-direction: column;
+  width: 25vw;
+  height: 50vh;
+
+  overflow-y: auto;
+
+  padding: 5px;
+  background: color.$light-gray;
+  border: 4px solid color.$gray;
+  box-shadow: 0 0 0 4px black;
+
+  color: black;
+
+  gap: 20px;
+}
+
+.adminContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  gap: 20px;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 33%;
+  gap: 10px;
+}
+
+.deleteButton {
+  background-color: #DC3545;
+  border-color: #BB2D3B;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5);
+  width: max-content;
+  padding: 5px 10px;
+
+  &:hover {
+    background-color: #BB2D3B;
+    border-color: #A71D2A;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5);
+  }
+
+  &:active {
+    background-color: #A71D2A;
+    border-color: #A71D2A;
+    box-shadow: none;
+  }
+}
+
+.adminElement {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 10px;
+
+  & > p {
+    font-size: 1.2rem;
+  }
+}
+
+.authorMessage {
+  color: color.$purple;
+}
+
+.answerMessage {
+  color: black;
+}

@@ -31,6 +31,12 @@ export async function getUserById(id: number): Promise<User | null> {
     return rowToUser(row);
 }
 
+export async function getAllUsers(): Promise<User[]> {
+    const db = getDb();
+    const result = await db.query(`SELECT * FROM users`);
+    return result.rows.map(rowToUser);
+}
+
 export async function deleteUserById(id: number): Promise<number> {
     const db = getDb();
     const result = await db.query(`DELETE FROM users WHERE id = $1`, [id]);
@@ -40,6 +46,12 @@ export async function deleteUserById(id: number): Promise<number> {
 export async function userExists(name: string): Promise<boolean> {
     const db = getDb();
     const result = await db.query(`SELECT 1 FROM users WHERE name = $1`, [name]);
+    return result.rows.length > 0;
+}
+
+export async function userExistsById(id: number): Promise<boolean> {
+    const db = getDb();
+    const result = await db.query(`SELECT 1 FROM users WHERE id = $1`, [id]);
     return result.rows.length > 0;
 }
 

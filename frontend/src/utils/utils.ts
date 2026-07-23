@@ -10,3 +10,16 @@ export function isNullOrUndefined(value: unknown): value is null | undefined {
 export function newEmptyFunction(): EmptyFunction {
     return () => { };
 }
+
+export async function getImageOfMusic(name: string, author: string): Promise<string> {
+    const url = `https://musicbrainz.org/ws/2/release?query=artist:"${author}" AND release:"${name}"&fmt=json`
+    const res = await fetch(url);
+    if (res.ok && res.status === 200) {
+        const data = await res.json();
+        if (data.count > 0) {
+            const id = data.releases[0].id
+            return `https://coverartarchive.org/release/${id}/front`
+        }
+    }
+    return ""
+}

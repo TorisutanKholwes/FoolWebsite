@@ -1,13 +1,15 @@
 import { useApi } from "../hook/useApi.tsx";
 import { ApiStatus } from "../api/types.ts";
 import * as React from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import InfoButton from "../components/InfoButton.tsx";
 import { useNavigate } from "react-router";
 import { usePopup } from "../hook/usePopup.tsx";
 import { usePanel } from "../hook/usePanel.tsx";
 import { PanelType } from "../utils/types.ts";
 import { useUser } from "../hook/useUser.tsx";
+import { useSound } from "../hook/useSound.tsx";
+import { getImageOfMusic } from "../utils/utils.ts";
 
 import snowgolem from "../assets/images/snowgolem.png"
 
@@ -21,6 +23,11 @@ export default function HomePage() {
     const { showPanel } = usePanel()
 
     const { user, reset } = useUser()
+    const { playing, paused, pause, resume, currentPlaying, nextSong, prevSong } = useSound()
+
+    const [musicEnable, setMusicEnabled] = useState(false);
+    const [musicFocused, setMusicFocused] = useState(false);
+    const [musicPlayingImage, setMusicPlayingImage] = useState<string>("");
 
     const olafRef  = useRef<HTMLDivElement|null>(null)
 
@@ -28,7 +35,18 @@ export default function HomePage() {
         if (!isAuthenticated) {
             return;
         }
+        if (localStorage.getItem("sound") === "true") {
+            setMusicEnabled(true)
+        }
     }, [])
+
+    useEffect(() => {
+        if (playing) {
+            getImageOfMusic(currentPlaying.name, currentPlaying.author).then((music) => {
+                setMusicPlayingImage(music)
+            })
+        }
+    }, [playing, currentPlaying]);
 
     const goTo = (where: string) => {
         if (!user) {
@@ -115,5 +133,29 @@ export default function HomePage() {
         { user && (
             <p onClick={() => showPanel("What did you expect to see by clicking here ?", PanelType.WARNING)} className={styles.loggedAs}>Currently logged as {user.name}</p>
         )}
+        { musicEnable && (
+            <div className={`${styles.musicDiv} ${musicFocused ? styles.focused : ''}`} onMouseEnter={() => setMusicFocused(true)} onMouseLeave={() => setMusicFocused(false)}>
+                { musicFocused ? (
+                    <>
+                        <img className={styles.bigImagePlaying} src={musicPlayingImage} alt="Music Playing Image" />
+                        <div className={styles.musicInformation}>
+                            <div className={styles.musicNames}>
+                                <p>{currentPlaying.name} - {currentPlaying.author}</p>
+                            </div>
+                            <div className={styles.buttonsContainer}>
+                                <p onClick={prevSong}>⏮</p>
+                                <p onClick={paused  ? resume : pause}>{!paused ? '⏸' : '►'}</p>
+                                <p onClick={nextSong}>⏭</p>
+                            </div>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <p onClick={paused  ? resume : pause}>{!paused ? '⏸' : '►'}</p>
+                        <img className={styles.miniImagePlaying} src={musicPlayingImage} alt="Music Playing Image" />
+                    </>
+                )}
+            </div>
+        ) }
     </div>
 }

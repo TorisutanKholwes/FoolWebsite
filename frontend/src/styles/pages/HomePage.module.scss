@@ -164,3 +164,60 @@ body:has(.active) {
     transform: rotate(-20deg) scale(1.1);
   }
 }
+
+
+.musicDiv {
+  background: rgba(0, 0, 0, 0.8);
+
+  width: max-content;
+  height: 96px;
+  padding: 5px;
+  margin-top: 0;
+
+  font-size: 1.1rem;
+
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+
+  transition: all 0.3s ease-in-out;
+
+  &.focused {
+    width: 200px;
+    display: flex;
+    align-items: center;
+  }
+
+  & > p {
+    font-size: 1.6rem;
+  }
+}
+
+.miniImagePlaying {
+  $size: 48px;
+  width: $size;
+  height: $size;
+}
+
+.bigImagePlaying {
+  $size: 48px;
+  width: $size;
+  height: $size;
+  flex: 0 0 auto;
+}
+
+.musicInformation {
+  flex: 1;
+}
+
+.buttonsContainer {
+  display: flex;
+}
+
+.musicNames {
+
+  & > p {
+    height: max-content;
+  }
+}

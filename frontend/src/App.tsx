@@ -20,6 +20,7 @@ import SocialPage from "./pages/SocialPage.tsx";
 
 
 import "./styles/global.scss";
+import AdminPage from "./pages/AdminPage.tsx";
 
 const RootLayout = () => {
     useImagePreload()
@@ -95,6 +96,10 @@ export default function App() {
                         {
                             path: "/social",
                             element: <SocialPage />
+                        },
+                        {
+                            path: "/admin",
+                            element: <ApiOnlineLayout><AuthenticatedLayout><AdminPage /></AuthenticatedLayout></ApiOnlineLayout>
                         },
                         {
                             path: '*',

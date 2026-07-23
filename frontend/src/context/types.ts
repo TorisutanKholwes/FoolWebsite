@@ -24,8 +24,14 @@ export type PanelContextType = {
 
 export type SoundContextType = {
     playing: boolean,
+    paused: boolean,
+    pause: EmptyFunction,
+    resume: EmptyFunction,
+    currentPlaying: {name: string, author: string}
     play: EmptyFunction,
     stop: EmptyFunction,
+    nextSong: EmptyFunction,
+    prevSong: EmptyFunction,
 }
 
 export type UserContextType = {
