@@ -9,11 +9,11 @@ import ApiOnlineLayout from "./layout/ApiOnlineLayout.tsx";
 import { useImagePreload } from "./hook/useImagePreload.tsx";
 import AuthenticatedLayout from "./layout/AuthenticatedLayout.tsx";
 import AskPage from "./pages/AskPage.tsx";
-
-import "./styles/global.scss"
 import VotePage from "./pages/VotePage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
-import LeaderboardPage from "./pages/LeaderboardPage.tsx";
+import LeaderboardPage from "./pages/LeaderboardPage.tsx"
+
+import "./styles/global.scss";
 
 const RootLayout = () => {
     useImagePreload()
@@ -72,7 +72,8 @@ export default function App() {
         <>
             <RouterProvider router={router} />
             <footer>
-                © 2026 Alexis Burnier-Framboret & Tristan Clowez & Corentin Delaporte. Powered by our brains.
+                <p>Alexis Burnier-Framboret, Tristan Clowez and Corentin Delaporte</p>
+                <p>Powered by Alexis's ankle</p>
             </footer>
         </>
     )
