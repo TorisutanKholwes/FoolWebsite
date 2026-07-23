@@ -12,6 +12,8 @@ import AskPage from "./pages/AskPage.tsx";
 import VotePage from "./pages/VotePage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
 import LeaderboardPage from "./pages/LeaderboardPage.tsx"
+import SettingsPage from "./pages/SettingsPage.tsx";
+import { useEffect } from "react";
 
 import "./styles/global.scss";
 
@@ -23,6 +25,16 @@ const RootLayout = () => {
 }
 
 export default function App() {
+
+    useEffect(() => {
+        const defaultSettings = ["remember", "sound"]
+        for (const setting of defaultSettings) {
+            if (!localStorage.getItem(setting)) {
+                localStorage.setItem(setting, "true")
+            }
+        }
+    }, [])
+
     const router = createBrowserRouter([
         {
             path: '/',
@@ -55,6 +67,10 @@ export default function App() {
                 {
                     path: "/leaderboard",
                     element: <ApiOnlineLayout><AuthenticatedLayout><LeaderboardPage /></AuthenticatedLayout></ApiOnlineLayout>
+                },
+                {
+                    path: "/settings",
+                    element: <SettingsPage />
                 },
                 {
                     path: '*',

@@ -32,7 +32,9 @@ const ApiProvider: React.FC<ProvidersProps> = ({ children }) => {
 
 
     const login = (newToken: string) => {
-        localStorage.setItem("authToken", newToken)
+        if (localStorage.getItem("remember") === "true") {
+            localStorage.setItem("authToken", newToken)
+        }
         setToken(newToken)
         apiClient.setToken(newToken)
     }

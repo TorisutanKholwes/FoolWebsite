@@ -22,6 +22,12 @@ export type PanelContextType = {
     showPanel: (message: string, type: PanelType, title?: string|null) => void
 }
 
+export type SoundContextType = {
+    playing: boolean,
+    play: EmptyFunction,
+    stop: EmptyFunction,
+}
+
 export interface ProvidersProps {
     children: React.ReactNode
 }

@@ -50,11 +50,11 @@ export default function HomePage() {
         move(where)
     }
 
-    const move = (where: string) => {
+    const move = (where: string, needApi: boolean = true) => {
         if (loading) {
             return;
         }
-        if (apiOnline !== ApiStatus.ONLINE) {
+        if (needApi && apiOnline !== ApiStatus.ONLINE) {
             showPanel("Sorry, you can't access this resources because the office is close", PanelType.WARNING, "Office closed")
             return
         }
@@ -72,30 +72,37 @@ export default function HomePage() {
 
     return <div className={ styles.page }>
         <header className={styles.header}>
-            <h1 onClick={() => showPanel("You're the fool", PanelType.INFO)}>F.O.O.L.</h1>
+            <div className={styles.titleDiv}>
+                <h1 className={styles.title} onClick={() => showPanel("You're the fool", PanelType.INFO)}>F.O.O.L.</h1>
+                <span className={styles.splash}>Splash text</span>
+            </div>
             <h2 className="orange">Federal Office Of Obvious Logic</h2>
         </header>
         <div className={styles.boxed}>
             <p>This office exists to document, with all the necessary administrative rigor, what has been evident from the very beginning.</p>
             <p className="orange">{apiOnline == ApiStatus.ONLINE ? "This office is open and ready to serve you." : "This office is currently closed. Please try again later."}</p>
         </div>
-        <div className={styles.buttons}>
-            <InfoButton onClick={() => goTo("/asker")} infoText={"The place where you can ask questions"}>Submit a form</InfoButton>
-            <InfoButton onClick={() => goTo("/vote")} infoText={"The place where you can upvote or downvote other people questions"}>Report Archive</InfoButton>
-            <InfoButton onClick={() => goTo("/leaderboard")} infoText={"A top of the most upvoted questions"}>Priority Cases</InfoButton>
-            <div className={styles.flexButton}>
-                { user ? (
-                    <>
-                        <InfoButton onClick={() => goTo("/profile")} infoText={"The place where you can see all your beautiful personal information"}>Profile information</InfoButton>
-                        <InfoButton infoText={"If you want to leave us, click here"} onClick={disconnect}>Logout</InfoButton>
-                    </>
-                ) : (
-                    <>
-                        <InfoButton onClick={() => move("/register")} infoText={"A regular register button just like all other websites"}>Register</InfoButton>
-                        <InfoButton onClick={() => move("/login")} infoText={"A regular login button just like all other websites"}>Login</InfoButton>
-                    </>
-                )}
+        <div className={styles.buttonsContainer}>
+            <InfoButton className={styles.smallButton} onClick={() => move("/settings", false)} infoText={"Options"}>Options</InfoButton>
+            <div className={styles.buttons}>
+                <InfoButton onClick={() => goTo("/asker")} infoText={"The place where you can ask questions"}>Submit a form</InfoButton>
+                <InfoButton onClick={() => goTo("/vote")} infoText={"The place where you can upvote or downvote other people questions"}>Report Archive</InfoButton>
+                <InfoButton onClick={() => goTo("/leaderboard")} infoText={"A top of the most upvoted questions"}>Priority Cases</InfoButton>
+                <div className={styles.flexButton}>
+                    { user ? (
+                        <>
+                            <InfoButton onClick={() => goTo("/profile")} infoText={"The place where you can see all your beautiful personal information"}>Profile information</InfoButton>
+                            <InfoButton infoText={"If you want to leave us, click here"} onClick={disconnect}>Logout</InfoButton>
+                        </>
+                    ) : (
+                        <>
+                            <InfoButton onClick={() => move("/register")} infoText={"A regular register button just like all other websites"}>Register</InfoButton>
+                            <InfoButton onClick={() => move("/login")} infoText={"A regular login button just like all other websites"}>Login</InfoButton>
+                        </>
+                    )}
+                </div>
             </div>
+            <InfoButton className={styles.smallButton} infoText={"Social"}>Social</InfoButton>
         </div>
         { user && (
             <p onClick={() => showPanel("What did you expect to see by clicking here ?", PanelType.WARNING)} className={styles.loggedAs}>Currently logged as {user.name}</p>

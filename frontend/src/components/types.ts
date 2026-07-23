@@ -22,3 +22,8 @@ export type PopupProps = {
     exclamation?: boolean;
     animated?: boolean;
 }
+
+export type ModalProps = {
+    children: React.ReactNode;
+    onClose: EmptyFunction
+}
