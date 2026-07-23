@@ -1,0 +1,99 @@
+@use "../color";
+
+.leaderboardPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 15px;
+}
+
+.title {
+  font-size: 3.5rem;
+  padding-bottom: 15px;
+}
+
+.leaderboardDiv {
+  width: 650px;
+  height: 450px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 10px 15px 15px 15px;
+  border: solid 2px color.$light-gray;
+
+  font-size: 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.messageElement {
+  display: flex;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border: solid 2px transparent;
+
+  &:hover {
+    border-color: color.$white;
+  }
+}
+
+.messagePlace {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: color.$white;
+  font-size: 1.8rem;
+}
+
+.firstPlace {
+  color: darkgoldenrod;
+}
+
+.secondPlace {
+  color: silver;
+}
+
+.thirdPlace {
+  color: rgb(205, 127, 50);
+}
+
+.messageContent {
+  flex: 10;
+}
+
+.messageScore {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.messageParagraph {
+  color: color.$light-purple;
+}
+
+.responseParagraph {
+  color: color.$orange
+}
+
+.leaderboardButtons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 20px;
+
+  & > button {
+    width: 150px;
+  }
+}

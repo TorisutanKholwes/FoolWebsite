@@ -13,6 +13,7 @@ import AskPage from "./pages/AskPage.tsx";
 import "./styles/global.scss"
 import VotePage from "./pages/VotePage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
+import LeaderboardPage from "./pages/LeaderboardPage.tsx";
 
 const RootLayout = () => {
     useImagePreload()
@@ -50,6 +51,10 @@ export default function App() {
                 {
                     path: "/profile",
                     element: <ApiOnlineLayout><AuthenticatedLayout><ProfilePage /></AuthenticatedLayout></ApiOnlineLayout>
+                },
+                {
+                    path: "/leaderboard",
+                    element: <ApiOnlineLayout><AuthenticatedLayout><LeaderboardPage /></AuthenticatedLayout></ApiOnlineLayout>
                 },
                 {
                     path: '*',

@@ -2,7 +2,7 @@ import express from "express";
 import { authenticate } from "@/middleware/user.middleware.ts";
 import { AuthenticatedRequest } from "@/database/types.ts";
 import { errorResponse, successResponse } from "@/utils/response.ts";
-import { deleteVote, getFilledVote, getVotesByUser, insertVote, voteExists } from "@/database/votes.ts";
+import { deleteVote, getFilledVote, getVote, getVotesByUser, insertVote, voteExists } from "@/database/votes.ts";
 import { getMessageById, updateMessage } from "@/database/messages.ts";
 
 const votesRoute = express.Router()
@@ -37,12 +37,23 @@ votesRoute.post("/", authenticate, async (req: AuthenticatedRequest, res) => {
 
 votesRoute.delete("/:id", authenticate, async (req: AuthenticatedRequest, res) => {
     if (!req.id) {
-        return errorResponse(res, "Error while deleting votes", 404)
+        return errorResponse(res, "Error while retrieving your user id", 500)
     }
     const messageId: number = parseInt(req.params.id as string)
     if (!(await voteExists(req.id, messageId))) {
         return errorResponse(res, "Vote not found", 404)
     }
+    const vote = await getVote(req.id, messageId)
+    let message = await getMessageById(messageId)
+    if (!message) {
+        return errorResponse(res, "Error while deleting votes", 404)
+    }
+    if (vote.type === "downvote") {
+        message.downvote -= 1
+    } else if (vote.type === "upvote") {
+        message.upvote -= 1
+    }
+    await updateMessage(messageId, message)
     await deleteVote(req.id, messageId)
     return successResponse(res, "Vote deleted successfully.")
 })
@@ -57,7 +68,7 @@ votesRoute.get("/me", authenticate, async (req: AuthenticatedRequest, res) => {
 
 votesRoute.get("/:id", authenticate, async (req: AuthenticatedRequest, res) => {
     if (!req.id) {
-        return errorResponse(res, "Error while deleting votes", 404)
+        return errorResponse(res, "Error while retrieving your user id", 500)
     }
     const messageId: number = parseInt(req.params.id as string)
     if (!(await voteExists(req.id, messageId))) {

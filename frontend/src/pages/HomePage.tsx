@@ -17,12 +17,16 @@ export default function HomePage() {
     const { showPanel } = usePanel()
 
     const [user, setUser] = useState<User | null>(null)
+    const [loading, setLoading] = useState<boolean>(false)
 
     useEffect(() => {
         if (!isAuthenticated) {
             return;
         }
-        fetchUser()
+        setLoading(true)
+        fetchUser().then(() => {
+            setLoading(false)
+        })
     }, [])
 
     const fetchUser = async () => {
@@ -36,6 +40,9 @@ export default function HomePage() {
     }
 
     const goTo = (where: string) => {
+        if (loading) {
+            return
+        }
         if (!user) {
             showPanel("You need to login before accessing this page", PanelType.ERROR, "Login required")
             return
@@ -44,6 +51,9 @@ export default function HomePage() {
     }
 
     const move = (where: string) => {
+        if (loading) {
+            return;
+        }
         if (apiOnline !== ApiStatus.ONLINE) {
             showPanel("Sorry, you can't access this resources because the office is close", PanelType.WARNING, "Office closed")
             return
@@ -53,6 +63,9 @@ export default function HomePage() {
     }
 
     const disconnect = () =>  {
+        if (loading) {
+            return;
+        }
         logout()
         window.location.reload()
     }

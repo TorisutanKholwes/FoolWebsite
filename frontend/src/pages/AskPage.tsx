@@ -1,20 +1,23 @@
 import Input from "../components/input/Input.tsx";
 import Button from "../components/button/Button.tsx";
 import { useNavigate } from "react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MessageObject, PanelType } from "../utils/types.ts";
 import { usePanel } from "../hook/usePanel.tsx";
 import { useApi } from "../hook/useApi.tsx";
-import { ApiResponse, AskResponse, User, UserResponse } from "../api/types.ts";
-
-import styles from "../styles/pages/AskPage.module.scss"
+import { ApiResponse, AskResponse, MessagesResponse, User, UserResponse } from "../api/types.ts";
 import * as React from "react";
 import { AUTHOR_MESSAGE_COLOR, RESPONSE_MESSAGE_COLOR } from "../utils/utils.ts";
+import { usePopup } from "../hook/usePopup.tsx";
+
+import styles from "../styles/pages/AskPage.module.scss"
+
 
 export default function AskPage() {
 
     const navigate = useNavigate();
     const { showPanel } = usePanel()
+    const { showPopup, hidePopup } = usePopup()
     const { api, isAuthenticated, logout } = useApi()
 
     const [user, setUser] = useState<User | null>(null)
@@ -22,27 +25,59 @@ export default function AskPage() {
     const [messages, setMessages] = useState<MessageObject[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
+    const messageContainerRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
         if (!isAuthenticated) {
             return;
         }
-        fetchUser()
+        fetchUser().then((u) => {
+            if (!u) {
+                return
+            }
+            fetchMessages(u)
+        })
     }, [])
+
+    useEffect(() => {
+        if (messageContainerRef.current) {
+            messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+        }
+    }, [messages]);
 
     const fetchUser = async () => {
         const response = await api.get("/auth/me")
         if (response.ok && response.status === 200) {
             const data = (await response.json()) as ApiResponse<UserResponse>
             setUser(data.user)
+            return data.user
         } else if (isAuthenticated) {
             logout()
         }
     }
 
-    const addMessage = (message: string, self: boolean) => {
+    const fetchMessages = async (u?: User) => {
+        const response = await api.get("/messages/me")
+        if (response.ok && response.status === 200) {
+            const formatResponse = (await response.json()) as ApiResponse<MessagesResponse>
+            formatResponse.content = formatResponse.content.reverse()
+            for (const message of formatResponse.content) {
+                addMessage(message.message, true, u);
+                addMessage(message.response, false, u);
+            }
+        } else {
+            showPopup("Error while fetching your messages", true)
+            setTimeout(() => {
+                hidePopup()
+            }, 3000)
+        }
+    }
+
+    const addMessage = (message: string, self: boolean, u?: User) => {
+        const realUser = u ? u : user
         const newMessage: MessageObject = {
             content: message,
-            author: self ? `You (${user?.name})` : 'F.O.O.L. Agent',
+            author: self ? `You (${realUser?.name})` : 'F.O.O.L. Agent',
             color: self ? AUTHOR_MESSAGE_COLOR : RESPONSE_MESSAGE_COLOR,
         }
         setMessages(prev => [...prev, newMessage]);
@@ -79,7 +114,7 @@ export default function AskPage() {
         <div className={styles.askPage}>
             <h1 className={`${styles.title} orange`}>Submit a form</h1>
             <div className={styles.askContainer}>
-                <div className={styles.messages}>
+                <div ref={messageContainerRef} className={styles.messages}>
                     {messages.map((message, index) => {
                         return (
                             <div key={index}>

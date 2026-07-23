@@ -23,6 +23,18 @@ export async function getMessageById(message_id: number): Promise<Message|null> 
     return rowToMessage(result.rows[0]);
 }
 
+export async function getFullMessageById(message_id: number): Promise<MessageWithUsername|null> {
+    const db = getDb()
+    const result = await db.query(
+        `SELECT m.id, m.user_id, m.message, m.response, m.upvote, m.downvote, m.datetime, u.name FROM messages m JOIN users u ON u.id = m.user_id WHERE m.id = $1`,
+        [message_id]
+    )
+    if (result.rows.length === 0) {
+        return null;
+    }
+    return rowToMessageWithUsername(result.rows[0]);
+}
+
 export async function updateMessage(message_id: number, message: Message) {
     const db = getDb()
     const result = await db.query(
@@ -40,8 +52,17 @@ export async function updateMessage(message_id: number, message: Message) {
 export async function getMessagesByUser(user_id: number) {
     const db = getDb()
     const result = await db.query(
-        `SELECT * FROM messages WHERE user_id = $1`,
+        `SELECT * FROM messages WHERE user_id = $1 ORDER BY datetime DESC`,
         [user_id]
+    )
+    return result.rows.map(rowToMessage);
+}
+
+export async function getMessageByUserWithLimit(user_id: number, limit: number) {
+    const db = getDb()
+    const result = await db.query(
+        `SELECT * FROM messages WHERE user_id = $1 ORDER BY datetime DESC LIMIT $2`,
+        [user_id, limit]
     )
     return result.rows.map(rowToMessage);
 }
@@ -57,7 +78,7 @@ export async function getAllMessages() {
 export async function getMessagesWithUsername() {
     const db = getDb()
     const result = await db.query(
-        `SELECT *, u.name FROM messages m JOIN users u ON u.id = m.user_id`
+        `SELECT m.id, m.user_id, m.message, m.response, m.upvote, m.downvote, m.datetime, u.name FROM messages m JOIN users u ON u.id = m.user_id`
     )
     return result.rows.map(rowToMessageWithUsername);
 }
@@ -73,7 +94,7 @@ export async function deleteMessage(message_id: number) {
 
 export async function getMessagesWithFilter(limit: number, offset: number, type: string) {
     const db = getDb()
-    let baseQuery = `SELECT *, u.name FROM messages m JOIN users u ON u.id = m.user_id`
+    let baseQuery = `SELECT m.id, m.user_id, m.message, m.response, m.upvote, m.downvote, m.datetime, u.name FROM messages m JOIN users u ON u.id = m.user_id`
     if (type === 'recent') {
         baseQuery += ` ORDER BY m.datetime DESC`
     } else if (type === 'daily') {
@@ -85,6 +106,19 @@ export async function getMessagesWithFilter(limit: number, offset: number, type:
     }
     baseQuery += ` LIMIT $1 OFFSET $2`
     const result = await db.query(baseQuery, [limit, offset])
+    return result.rows.map(rowToMessageWithUsername);
+}
+
+export async function getBestMessages(limit: number): Promise<MessageWithUsername[]> {
+    const db = getDb()
+    const result = await db.query(
+        `SELECT m.id, m.user_id, m.message, m.response, m.upvote, m.downvote, m.datetime, u.name 
+         FROM messages m 
+         JOIN users u ON u.id = m.user_id  
+         ORDER BY (m.upvote - m.downvote) DESC 
+         LIMIT $1`,
+        [limit]
+    )
     return result.rows.map(rowToMessageWithUsername);
 }
 

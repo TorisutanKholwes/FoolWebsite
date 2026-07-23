@@ -4,7 +4,8 @@ import { GROQ_URL } from "@/constants/constants.ts";
 import { PROMPT_BODY } from "@/constants/prompts.ts";
 import { authenticate } from "@/middleware/user.middleware.ts";
 import {
-    getMessagesByUser,
+    getBestMessages,
+    getFullMessageById, getMessageByUserWithLimit,
     getMessagesWithFilter,
     insertMessage
 } from "@/database/messages.ts";
@@ -60,7 +61,14 @@ messagesRoute.get("/me", authenticate, async (req: AuthenticatedRequest, res) =>
     if (!req.id) {
         return errorResponse(res, "Error while retrieving your user id", 500);
     }
-    const messages = await getMessagesByUser(req.id);
+    let msgLimit = 10;
+    if (req.query) {
+        const { limit } = req.query;
+        if (limit) {
+            msgLimit = Number(limit);
+        }
+    }
+    const messages = await getMessageByUserWithLimit(req.id, msgLimit);
     return successResponse(res, { content: messages });
 })
 
@@ -71,6 +79,28 @@ messagesRoute.get("/", async (req, res) => {
     const { limit, offset, filter } = req.query;
     const messages = await getMessagesWithFilter(Number(limit), Number(offset), String(filter));
     return successResponse(res, { content: messages });
+})
+
+messagesRoute.get("/best", async (req, res) => {
+    let limit = 10
+    if (req.query && req.query.limit) {
+        limit = Number(req.query.limit)
+    }
+    const messages = await getBestMessages(limit)
+    return successResponse(res, { content: messages });
+})
+
+
+messagesRoute.get("/:id", async (req, res) => {
+    const messageId = parseInt(req.params.id as string);
+    if (isNaN(messageId)) {
+        return errorResponse(res, "Invalid message id", 400);
+    }
+    const message = await getFullMessageById(messageId)
+    if (!message) {
+        return errorResponse(res, "Error while retrieving your query", 500);
+    }
+    return successResponse(res, { content: message });
 })
 
 export default messagesRoute

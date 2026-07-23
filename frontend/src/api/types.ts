@@ -30,6 +30,19 @@ export type Message = {
     datetime: Date;
 }
 
+export type Vote = {
+    id: number;
+    user_id: number;
+    message_id: number;
+    type: string;
+    date: Date;
+}
+
+export type FilledVote = Vote & {
+    username: string;
+    message: string;
+}
+
 export type MessageWithUsername = Message & {
     username: string;
 }
@@ -51,11 +64,19 @@ export type UnknowResponse = {
     [key: string]: unknown
 }
 
+export type MessageResponse = {
+    content: Message
+}
+
+export type MessageWithUsernameResponse = {
+    content: MessageWithUsername
+}
+
 export type MessagesResponse = {
     content: Message[]
 }
 
-export type MessageWithUsernameResponse = {
+export type MessagesWithUsernameResponse = {
     content: MessageWithUsername[]
 }
 
@@ -67,6 +88,22 @@ export type AskResponse = {
 
 export type UserResponse = {
     user: User
+}
+
+export type VoteResponse = {
+    vote: Vote
+}
+
+export type FilledVoteResponse = {
+    vote: FilledVote
+}
+
+export type VotesResponse = {
+    votes: Vote[]
+}
+
+export type FilledVotesResponse = {
+    votes: FilledVote[]
 }
 
 export type ApiResponse<T> = T & {
