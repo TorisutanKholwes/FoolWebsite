@@ -1,3 +1,10 @@
+body:has(.profilePage) {
+  background:
+          linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+          url("../../assets/images/background/profile.png") no-repeat center center fixed;
+  background-size: cover;
+}
+
 .profilePage {
   display: flex;
   flex-direction: column;

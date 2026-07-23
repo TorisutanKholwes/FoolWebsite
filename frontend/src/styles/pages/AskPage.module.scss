@@ -1,5 +1,12 @@
 @use "../color";
 
+body:has(.askPage) {
+  background:
+          linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+          url("../../assets/images/background/chatbox.png") no-repeat center center fixed;
+  background-size: cover;
+}
+
 .askPage {
   display: flex;
   flex-direction: column;

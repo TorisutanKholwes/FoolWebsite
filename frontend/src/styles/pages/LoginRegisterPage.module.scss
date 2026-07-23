@@ -1,5 +1,12 @@
 @use "../color";
 
+body:has(.loginPage), body:has(.registerPage) {
+  background:
+          linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+          url("../../assets/images/background/login.png") no-repeat center center fixed;
+  background-size: cover;
+}
+
 .loginPage, .registerPage {
   display: flex;
   flex-direction: column;

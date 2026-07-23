@@ -1,5 +1,12 @@
 @use "../color";
 
+body:has(.votePage) {
+  background:
+          linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+          url("../../assets/images/background/evidencesroom.png") no-repeat center center fixed;
+  background-size: cover;
+}
+
 .votePage {
   display: flex;
   flex-direction: column;

@@ -15,9 +15,11 @@ import LeaderboardPage from "./pages/LeaderboardPage.tsx"
 import SettingsPage from "./pages/SettingsPage.tsx";
 import { useEffect } from "react";
 import { useUser } from "./hook/useUser.tsx";
+import { useApi } from "./hook/useApi.tsx";
+import SocialPage from "./pages/SocialPage.tsx";
+
 
 import "./styles/global.scss";
-import { useApi } from "./hook/useApi.tsx";
 
 const RootLayout = () => {
     useImagePreload()
@@ -91,6 +93,10 @@ export default function App() {
                             element: <SettingsPage />
                         },
                         {
+                            path: "/social",
+                            element: <SocialPage />
+                        },
+                        {
                             path: '*',
                             element: <Page404 />
                         },
@@ -108,8 +114,8 @@ export default function App() {
         <>
             <RouterProvider router={router} />
             <footer>
-                <p>Alexis Burnier-Framboret, Tristan Clowez and Corentin Delaporte</p>
-                <p>Powered by Alexis's ankle</p>
+                <p>Alexis Burnier, Tristan Clowez and Corentin Delaporte</p>
+                <p onClick={() => window.open("https://github.com/TorisutanKholwes/FoolWebsite", "_blank")} className="ankle">Powered by Alexis's ankle</p>
             </footer>
         </>
     )

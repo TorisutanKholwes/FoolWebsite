@@ -1,14 +1,17 @@
 import { useApi } from "../hook/useApi.tsx";
 import { ApiStatus } from "../api/types.ts";
-import { useEffect } from "react";
+import * as React from "react";
+import { useEffect, useRef } from "react";
 import InfoButton from "../components/InfoButton.tsx";
 import { useNavigate } from "react-router";
 import { usePopup } from "../hook/usePopup.tsx";
 import { usePanel } from "../hook/usePanel.tsx";
 import { PanelType } from "../utils/types.ts";
+import { useUser } from "../hook/useUser.tsx";
+
+import snowgolem from "../assets/images/snowgolem.png"
 
 import styles from "../styles/pages/HomePage.module.scss"
-import { useUser } from "../hook/useUser.tsx";
 
 export default function HomePage() {
 
@@ -18,6 +21,8 @@ export default function HomePage() {
     const { showPanel } = usePanel()
 
     const { user, reset } = useUser()
+
+    const olafRef  = useRef<HTMLDivElement|null>(null)
 
     useEffect(() => {
         if (!isAuthenticated) {
@@ -48,7 +53,26 @@ export default function HomePage() {
         window.location.reload()
     }
 
-    return <div className={ styles.page }>
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        const { clientX, clientY } = e;
+
+        const isBetween = (curr: number, pos: number, gap: number) => {
+            if (curr >= pos - gap && curr <= pos + gap) {
+                return true;
+            }
+            return false;
+        }
+
+        if (isBetween(clientX, 25, 25) && isBetween(clientY, Math.round(window.innerHeight / 2), 75)) {
+            if (olafRef.current) {
+                olafRef.current.classList.add(styles.active);
+            }
+        } else if (olafRef.current && olafRef.current.classList.contains(styles.active)) {
+            olafRef.current.classList.remove(styles.active);
+        }
+    }
+
+    return <div onMouseMove={handleMouseMove} className={ styles.page }>
         <header className={styles.header}>
             <div className={styles.titleDiv}>
                 <h1 className={styles.title} onClick={() => showPanel("You're the fool", PanelType.INFO)}>F.O.O.L.</h1>
@@ -80,7 +104,13 @@ export default function HomePage() {
                     )}
                 </div>
             </div>
-            <InfoButton className={styles.smallButton} infoText={"Social"}>Social</InfoButton>
+            <InfoButton className={styles.smallButton} onClick={() => move("/social", false)} infoText={"Social"}>Social</InfoButton>
+        </div>
+        <div ref={olafRef} className={styles.olaf}>
+            <div className={styles.olafTextDiv}>
+                <p className={styles.olafName}>Ilyess</p>
+            </div>
+            <img src={snowgolem} alt="Snow Golem" />
         </div>
         { user && (
             <p onClick={() => showPanel("What did you expect to see by clicking here ?", PanelType.WARNING)} className={styles.loggedAs}>Currently logged as {user.name}</p>

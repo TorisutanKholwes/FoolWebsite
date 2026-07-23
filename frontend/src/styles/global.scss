@@ -8,10 +8,11 @@
 }
 
 body {
-  background:
+  /*background:
           linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
           url("../assets/images/background.png") no-repeat center center fixed;
-  //background: darkslategray;
+          */
+  background: darkslategray;
   background-size: cover;
   color: color.$white;
   font-family: 'VT323', monospace;
@@ -26,7 +27,7 @@ footer {
   display: flex;
   justify-content: space-between;
 
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   & > p {
     margin-right: 15px;
     margin-left: 15px;
@@ -35,4 +36,8 @@ footer {
 
 .orange {
   color: color.$orange
+}
+
+footer > .ankle:hover {
+  text-decoration: underline;
 }

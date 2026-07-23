@@ -1,5 +1,12 @@
 @use '../color';
 
+body:has(.page) {
+  background:
+          linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+          url("../../assets/images/background/settings.png") no-repeat center center fixed;
+  background-size: cover;
+}
+
 .page {
   display: flex;
   flex-direction: column;
