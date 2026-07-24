@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 
-const imagesFiles = [
-    new URL("../assets/images/cheh.jpg", import.meta.url).href,
-    new URL("../assets/images/warn.jpg", import.meta.url).href,
-    new URL("../assets/images/yes.jpg", import.meta.url).href,
-]
+const files = import.meta.glob("/src/assets/**/*", { eager: true });
+
+const imagesFiles = Object.keys(files)
+
+console.log(imagesFiles)
 
 export const useImagePreload = () => {
     useEffect(() => {

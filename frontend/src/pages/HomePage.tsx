@@ -96,7 +96,7 @@ export default function HomePage() {
             <p className="orange">{apiOnline == ApiStatus.ONLINE ? "This office is open and ready to serve you." : "This office is currently closed. Please try again later."}</p>
         </div>
         <div className={styles.buttonsContainer}>
-            <InfoButton className={styles.smallButton} onClick={() => move("/settings", false)} infoText={"Options"}>Options</InfoButton>
+            <InfoButton className={styles.smallButton} onClick={() => move("/settings", false)} infoText={"Disable music, remember password and a bunch of other buttons"}>Options</InfoButton>
             <div className={styles.buttons}>
                 <InfoButton onClick={() => goTo("/asker")} infoText={"The place where you can ask questions"}>Submit a form</InfoButton>
                 <InfoButton onClick={() => goTo("/vote")} infoText={"The place where you can upvote or downvote other people questions"}>Report Archive</InfoButton>
@@ -115,7 +115,7 @@ export default function HomePage() {
                     )}
                 </div>
             </div>
-            <InfoButton className={styles.smallButton} onClick={() => move("/social", false)} infoText={"Social"}>Social</InfoButton>
+            <InfoButton className={styles.smallButton} onClick={() => move("/social", false)} infoText={"If you want to see our beautiful faces"}>Social</InfoButton>
         </div>
         <div ref={olafRef} className={styles.olaf}>
             <div className={styles.olafTextDiv}>
