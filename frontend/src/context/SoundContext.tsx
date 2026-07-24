@@ -10,7 +10,8 @@ const SoundContext = createContext<SoundContextType>({
     resume: newEmptyFunction(),
     currentPlaying: {
         name: "",
-        author: ""
+        author: "",
+        image: "",
     },
     play: newEmptyFunction(),
     stop: newEmptyFunction(),
@@ -26,26 +27,34 @@ const SoundProvider: FC<ProvidersProps> = ( { children } ) => {
     const [paused, setPaused] = useState<boolean>(false)
     const [currentPlaying, setCurrentPlaying] = useState({
         name: "",
-        author: ""
+        author: "",
+        image: ""
     })
     const backgroundAudio = useRef(new Audio(MUSICS[musicIndex].song))
 
     useEffect(() => {
-        if (localStorage.getItem("sound") === "true") {
+        if (localStorage.getItem("sound") === "true" || !localStorage.getItem("sound")) {
             play()
             setCurrentPlaying({
                 name: MUSICS[musicIndex].name,
-                author: MUSICS[musicIndex].author
+                author: MUSICS[musicIndex].author,
+                image: MUSICS[musicIndex].image
             })
         }
     }, []);
 
-    const play = () => {
 
+    const play = (i?: number) => {
+        let idx = i ? i : musicIndex
         backgroundAudio.current.currentTime = 0
         backgroundAudio.current.play()
         setPlaying(true)
         setPaused(false)
+        setCurrentPlaying({
+            name: MUSICS[idx].name,
+            author: MUSICS[idx].author,
+            image: MUSICS[idx].image
+        })
     }
 
     const stop = () => {
@@ -79,9 +88,10 @@ const SoundProvider: FC<ProvidersProps> = ( { children } ) => {
         backgroundAudio.current = new Audio(MUSICS[newIndex].song)
         setCurrentPlaying({
             name: MUSICS[newIndex].name,
-            author: MUSICS[newIndex].author
+            author: MUSICS[newIndex].author,
+            image: MUSICS[newIndex].image
         })
-        play()
+        play(newIndex)
     }
 
     const prevSong = () => {
@@ -91,9 +101,10 @@ const SoundProvider: FC<ProvidersProps> = ( { children } ) => {
         backgroundAudio.current = new Audio(MUSICS[newIndex].song)
         setCurrentPlaying({
             name: MUSICS[newIndex].name,
-            author: MUSICS[newIndex].author
+            author: MUSICS[newIndex].author,
+            image: MUSICS[newIndex].image
         })
-        play()
+        play(newIndex)
     }
 
     return <SoundContext.Provider value={{ playing, paused, currentPlaying, play, stop, pause, resume, nextSong, prevSong }}>

@@ -9,7 +9,6 @@ import { usePanel } from "../hook/usePanel.tsx";
 import { PanelType } from "../utils/types.ts";
 import { useUser } from "../hook/useUser.tsx";
 import { useSound } from "../hook/useSound.tsx";
-import { getImageOfMusic } from "../utils/utils.ts";
 
 import snowgolem from "../assets/images/snowgolem.png"
 
@@ -23,11 +22,10 @@ export default function HomePage() {
     const { showPanel } = usePanel()
 
     const { user, reset } = useUser()
-    const { playing, paused, pause, resume, currentPlaying, nextSong, prevSong } = useSound()
+    const { paused, playing, pause, resume, currentPlaying, nextSong, prevSong } = useSound()
 
     const [musicEnable, setMusicEnabled] = useState(false);
     const [musicFocused, setMusicFocused] = useState(false);
-    const [musicPlayingImage, setMusicPlayingImage] = useState<string>("");
 
     const olafRef  = useRef<HTMLDivElement|null>(null)
 
@@ -35,16 +33,11 @@ export default function HomePage() {
         if (!isAuthenticated) {
             return;
         }
-        if (localStorage.getItem("sound") === "true") {
-            setMusicEnabled(true)
-        }
     }, [])
 
     useEffect(() => {
-        if (playing) {
-            getImageOfMusic(currentPlaying.name, currentPlaying.author).then((music) => {
-                setMusicPlayingImage(music)
-            })
+        if (localStorage.getItem("sound") === "true" || !localStorage.getItem("sound")) {
+            setMusicEnabled(true)
         }
     }, [playing, currentPlaying]);
 
@@ -137,7 +130,7 @@ export default function HomePage() {
             <div className={`${styles.musicDiv} ${musicFocused ? styles.focused : ''}`} onMouseEnter={() => setMusicFocused(true)} onMouseLeave={() => setMusicFocused(false)}>
                 { musicFocused ? (
                     <>
-                        <img className={styles.bigImagePlaying} src={musicPlayingImage} alt="Music Playing Image" />
+                        <img className={styles.bigImagePlaying} src={currentPlaying.image} alt="Music Playing Image" />
                         <div className={styles.musicInformation}>
                             <div className={styles.musicNames}>
                                 <p>{currentPlaying.name} - {currentPlaying.author}</p>
@@ -151,8 +144,7 @@ export default function HomePage() {
                     </>
                 ) : (
                     <>
-                        <p onClick={paused  ? resume : pause}>{!paused ? '⏸' : '►'}</p>
-                        <img className={styles.miniImagePlaying} src={musicPlayingImage} alt="Music Playing Image" />
+                        <img className={styles.miniImagePlaying} src={currentPlaying.image} alt="Music Playing Image" />
                     </>
                 )}
             </div>

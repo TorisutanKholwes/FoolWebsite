@@ -170,7 +170,7 @@ body:has(.active) {
   background: rgba(0, 0, 0, 0.8);
 
   width: max-content;
-  height: 96px;
+  height: 48px;
   padding: 5px;
   margin-top: 0;
 
@@ -179,14 +179,20 @@ body:has(.active) {
   position: absolute;
   top: 50%;
   right: 0;
-  transform: translateY(-50%);
+  transform: translateY(-50%) translateX(20px);
+  opacity: 0.85;
 
-  transition: all 0.3s ease-in-out;
+  transition: width 0.35s ease, transform 0.35s ease, opacity 0.35s ease, box-shadow 0.35s ease;
+  box-shadow: 0 0 0 transparent;
 
   &.focused {
+    height: 128px;
     width: 200px;
-    display: flex;
-    align-items: center;
+    transform: translateY(-50%) translateX(0);
+    opacity: 1;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    //display: flex;
+    //align-items: center;
   }
 
   & > p {

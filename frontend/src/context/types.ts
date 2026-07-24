@@ -27,7 +27,7 @@ export type SoundContextType = {
     paused: boolean,
     pause: EmptyFunction,
     resume: EmptyFunction,
-    currentPlaying: {name: string, author: string}
+    currentPlaying: { name: string, author: string, image: string },
     play: EmptyFunction,
     stop: EmptyFunction,
     nextSong: EmptyFunction,
