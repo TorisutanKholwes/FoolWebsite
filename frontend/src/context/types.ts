@@ -19,7 +19,8 @@ export type PopupContextType = {
 }
 
 export type PanelContextType = {
-    showPanel: (message: string, type: PanelType, title?: string|null) => void
+    showPanel: (message: string, type: PanelType, title?: string|null) => void,
+    ask: (message: string, type: PanelType, fallback: (value: string) => void, title?: string|null) => void,
 }
 
 export type SoundContextType = {
@@ -32,6 +33,8 @@ export type SoundContextType = {
     stop: EmptyFunction,
     nextSong: EmptyFunction,
     prevSong: EmptyFunction,
+    volume: number,
+    setVolume: (volume: number) => void,
 }
 
 export type UserContextType = {

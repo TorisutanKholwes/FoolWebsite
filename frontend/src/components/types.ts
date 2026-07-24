@@ -14,7 +14,7 @@ export type InfoPanelProps = {
     message: string;
     title?: string;
     type: PanelType;
-    onClose?: EmptyFunction
+    onClose?: (value?: string) => void;
 }
 
 export type PopupProps = {

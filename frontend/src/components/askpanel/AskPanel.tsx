@@ -1,15 +1,17 @@
-import * as React from "react";
+import { FC, useState } from "react";
 import { InfoPanelProps } from "../types.ts";
-import { PanelType } from "../../utils/types.ts";
+import styles from "../infopanel/style.module.scss";
 import Button from "../button/Button.tsx";
 
 import cheh from "../../assets/images/cheh.jpg"
 import warn from "../../assets/images/warn.jpg"
 import yes from "../../assets/images/yes.jpg"
+import { PanelType } from "../../utils/types.ts";
+import Input from "../input/Input.tsx";
 
-import styles from "./style.module.scss"
+const AskPanel: FC<InfoPanelProps> = ( { message, title = '', type, onClose } ) => {
 
-const InfoPanel: React.FC<InfoPanelProps> = ( { message, title = '', type, onClose } ) => {
+    const [inputValue, setInputValue] = useState<string>("")
 
     const imageUrl = type === PanelType.INFO ? yes : type === PanelType.WARNING ? warn : type === PanelType.ERROR ? cheh : ""
 
@@ -23,10 +25,11 @@ const InfoPanel: React.FC<InfoPanelProps> = ( { message, title = '', type, onClo
                     <h2 className={styles.textTitle}>{title}</h2>
                 )}
                 <p className={styles.message}>{message}</p>
-                <Button onClick={() => onClose ? onClose() : null}>Validate</Button>
+                <Input className={styles.askInput} type="text" placeholder="Response" onChange={(e) => setInputValue(e.target.value)} value={inputValue} />
+                <Button onClick={() => onClose ? onClose(inputValue) : null}>Validate</Button>
             </div>
         </div>
     </div>
 }
 
-export default InfoPanel
+export default AskPanel

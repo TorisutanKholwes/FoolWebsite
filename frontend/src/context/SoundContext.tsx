@@ -16,13 +16,16 @@ const SoundContext = createContext<SoundContextType>({
     play: newEmptyFunction(),
     stop: newEmptyFunction(),
     nextSong: newEmptyFunction(),
-    prevSong: newEmptyFunction()
+    prevSong: newEmptyFunction(),
+    volume: 0,
+    setVolume: newEmptyFunction(),
 })
 
 const SoundProvider: FC<ProvidersProps> = ( { children } ) => {
 
     const [musicIndex, setMusicIndex] = useState<number>(0)
 
+    const [volume, setVolume] = useState<number>(100)
     const [playing, setPlaying] = useState<boolean>(false)
     const [paused, setPaused] = useState<boolean>(false)
     const [currentPlaying, setCurrentPlaying] = useState({
@@ -43,6 +46,10 @@ const SoundProvider: FC<ProvidersProps> = ( { children } ) => {
         }
     }, []);
 
+
+    useEffect(() => {
+        backgroundAudio.current.volume = volume / 100
+    }, [volume])
 
     const play = (i?: number) => {
         let idx = i ? i : musicIndex
@@ -107,7 +114,7 @@ const SoundProvider: FC<ProvidersProps> = ( { children } ) => {
         play(newIndex)
     }
 
-    return <SoundContext.Provider value={{ playing, paused, currentPlaying, play, stop, pause, resume, nextSong, prevSong }}>
+    return <SoundContext.Provider value={{ playing, paused, currentPlaying, play, stop, pause, resume, nextSong, prevSong, volume, setVolume }}>
         {children}
     </SoundContext.Provider>
 

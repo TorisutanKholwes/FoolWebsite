@@ -23,3 +23,7 @@ export async function getImageOfMusic(name: string, author: string): Promise<str
     }
     return ""
 }
+
+export function getRandomInt(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min)) + min;
+}

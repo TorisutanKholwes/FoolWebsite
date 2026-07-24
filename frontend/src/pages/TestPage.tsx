@@ -3,15 +3,18 @@ import InfoButton from "../components/InfoButton.tsx";
 import { usePanel } from "../hook/usePanel.tsx";
 import Button from "../components/button/Button.tsx";
 import { PanelType } from "../utils/types.ts";
-import Input from "../components/input/Input.tsx";
 
 export default function TestPage() {
 
     const { showPopup, hidePopup } = usePopup()
-    const { showPanel } = usePanel()
+    const { showPanel, ask } = usePanel()
 
     const textHover = () => {
         showPopup("You hovered the text here")
+    }
+
+    const afterAsk = (value: string) => {
+        console.log("User input:", value)
     }
 
     return (
@@ -21,7 +24,7 @@ export default function TestPage() {
             <Button onClick={() => showPanel("This is an info panel", PanelType.INFO)}>Info panel</Button>
             <Button onClick={() => showPanel("This is a warning panel", PanelType.WARNING)}>Warning panel</Button>
             <Button onClick={() => showPanel("This is an error panel", PanelType.ERROR)}>Error panel</Button>
-            <Input type="password" />
+            <Button onClick={() => ask("Hello World", PanelType.INFO, afterAsk)}>Ask panel</Button>
         </div>
     )
 
