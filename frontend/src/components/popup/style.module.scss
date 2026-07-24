@@ -11,7 +11,7 @@
   right: 8px;
   top: 8px;
   width: 400px;
-  height: 100px;
+  height: 120px;
 }
 
 .animated {
@@ -36,6 +36,8 @@
   padding: 10px 0;
   margin-right: 2px;
   font-size: 1.4rem;
+  height: 100px;
+
   & > p {
     display: flex;
     align-content: center;
@@ -52,7 +54,8 @@
   text-shadow: 2px 2px 0 color.$gray, 4px 4px 0 black;
   margin: 0;
   line-height: 1;
-  transform: translateY(-2px);
+  transform: translateY(3px);
+  height: 100%;
 }
 
 @keyframes popupIn {

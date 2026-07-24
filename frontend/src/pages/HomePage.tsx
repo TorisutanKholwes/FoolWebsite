@@ -68,10 +68,7 @@ export default function HomePage() {
         const { clientX, clientY } = e;
 
         const isBetween = (curr: number, pos: number, gap: number) => {
-            if (curr >= pos - gap && curr <= pos + gap) {
-                return true;
-            }
-            return false;
+            return curr >= pos - gap && curr <= pos + gap;
         }
 
         if (isBetween(clientX, 25, 25) && isBetween(clientY, Math.round(window.innerHeight / 2), 75)) {

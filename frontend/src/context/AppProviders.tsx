@@ -9,13 +9,13 @@ import { UserProvider } from "./UserContext.tsx";
 export const AppProviders: React.FC<ProvidersProps> = ({ children }) => {
     return <ApiProvider>
         <PopupProvider>
-            <PanelProvider>
-                <SoundProvider>
+            <SoundProvider>
+                <PanelProvider>
                     <UserProvider>
                         {children}
                     </UserProvider>
-                </SoundProvider>
-            </PanelProvider>
+                </PanelProvider>
+            </SoundProvider>
         </PopupProvider>
     </ApiProvider>
 }

@@ -15,3 +15,13 @@ export type MessageObject = {
     color: string,
     content: string
 }
+
+export type PeriodicElement = {
+    id: number
+    name: string
+}
+
+export type CountryData = {
+    name: string,
+    japaneseName: string
+}
