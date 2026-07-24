@@ -65,4 +65,9 @@ $filter: brightness(0) saturate(100%) invert(30%) sepia(31%) saturate(309%) hue-
   right: 10px;
   cursor: pointer;
   transform: translateY(-50%);
+  transition: right .3s ease;
+}
+
+.moveEye {
+  right: -35px !important;
 }
